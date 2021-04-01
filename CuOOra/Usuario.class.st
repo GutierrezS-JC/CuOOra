@@ -10,7 +10,7 @@ Class {
 		'topicosInteres',
 		'preguntas'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #'instance creation' }

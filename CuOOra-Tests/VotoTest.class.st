@@ -5,7 +5,7 @@ Class {
 		'usuario',
 		'voto'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Tests'
 }
 
 { #category : #running }

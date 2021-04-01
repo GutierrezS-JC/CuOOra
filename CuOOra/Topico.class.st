@@ -5,7 +5,7 @@ Class {
 		'nombre',
 		'descripcion'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #'instance creation' }

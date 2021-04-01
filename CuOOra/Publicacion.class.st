@@ -7,7 +7,7 @@ Class {
 		'likes',
 		'dislikes'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #accessing }

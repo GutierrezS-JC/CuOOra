@@ -14,7 +14,7 @@ Class {
 		'usuario4',
 		'preguntasUsuario'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Tests'
 }
 
 { #category : #running }

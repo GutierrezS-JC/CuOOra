@@ -7,7 +7,7 @@ Class {
 		'respuestas',
 		'topicos'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #'instance creation' }

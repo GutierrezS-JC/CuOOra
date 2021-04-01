@@ -11,7 +11,7 @@ Class {
 		'topico3',
 		'pregunta'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Tests'
 }
 
 { #category : #running }

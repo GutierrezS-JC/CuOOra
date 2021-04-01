@@ -6,7 +6,7 @@ Class {
 		'usuario',
 		'usuario2'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Tests'
 }
 
 { #category : #running }

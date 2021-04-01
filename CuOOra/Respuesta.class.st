@@ -5,7 +5,7 @@ Class {
 		'contenido',
 		'usuario'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #'instance creation' }

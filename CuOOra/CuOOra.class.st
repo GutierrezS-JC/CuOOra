@@ -5,7 +5,7 @@ Class {
 		'usuarios',
 		'topicos'
 	],
-	#category : #CuOOra
+	#category : #'CuOOra-Model'
 }
 
 { #category : #accessing }
