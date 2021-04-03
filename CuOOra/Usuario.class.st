@@ -17,7 +17,7 @@ Class {
 Usuario class >> conNombre: unNombre conContrasenia: unaContrasenia [
 	^ self new
 		conNombre: unNombre
-		conContrasenia: unaContrasenia
+		conContrasenia: unaContrasenia; yourself
 ]
 
 { #category : #accessing }
@@ -40,6 +40,11 @@ seguidos add: unUsuario .
 Usuario >> conNombre: unNombre conContrasenia: unaContrasenia [
 	nombre := unNombre.
 	contrasenia := unaContrasenia
+]
+
+{ #category : #accessing }
+Usuario >> contrasenia [
+^contrasenia 
 ]
 
 { #category : #accessing }
@@ -75,6 +80,11 @@ Usuario >> initialize [
 	seguidos := OrderedCollection new.
 	preguntas := OrderedCollection new.
 	topicosInteres := Set new
+]
+
+{ #category : #accessing }
+Usuario >> nombre [
+^nombre
 ]
 
 { #category : #accessing }

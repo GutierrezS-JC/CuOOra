@@ -5,8 +5,21 @@ Class {
 		'usuarios',
 		'topicos'
 	],
+	#classInstVars : [
+		'soleInstance'
+	],
 	#category : #'CuOOra-Model'
 }
+
+{ #category : #'instance creation' }
+CuOOra class >> clearSoleInstance [
+	soleInstance := nil
+]
+
+{ #category : #'instance creation' }
+CuOOra class >> soleInstance [
+	^ soleInstance ifNil: [ soleInstance := self new ]
+]
 
 { #category : #accessing }
 CuOOra >> agregarTopicoConNombre: unNombre conDescripcion: unaDescripcion [
@@ -16,6 +29,11 @@ CuOOra >> agregarTopicoConNombre: unNombre conDescripcion: unaDescripcion [
 		conDescripcion: unaDescripcion.
 	topicos add: nuevoTopico.
 	^nuevoTopico.
+]
+
+{ #category : #accessing }
+CuOOra >> agregarUsuario:unUsuario [
+usuarios add:unUsuario .
 ]
 
 { #category : #accessing }
@@ -40,10 +58,58 @@ CuOOra >> crearUsuarioConNombre: unNombre conContrasenia: unaContrasenia [
 	^usuarioNuevo
 ]
 
+{ #category : #accessing }
+CuOOra >> devolverUsuarios [
+^usuarios
+]
+
+{ #category : #accessing }
+CuOOra >> iniciarSesionConNombre: unNombre conContrasenia: unaContrasenia [
+	^ usuarios
+		detect:
+			[ :usuario | usuario nombre = unNombre & (usuario contrasenia = unaContrasenia) ]
+		ifNone: [ nil ]
+]
+
 { #category : #initialize }
 CuOOra >> initialize [
 	usuarios := OrderedCollection new.
-	topicos := OrderedCollection new
+	topicos := OrderedCollection new.
+	self initializeWithQuestions.
+]
+
+{ #category : #initialize }
+CuOOra >> initializeWithQuestions [
+	| usuario1 usuario2 usuario3 topicos1 topicos2 topicos3 |
+	"Inicializacion de colecciones"
+	topicos1 := OrderedCollection new.
+	topicos2 := OrderedCollection new.
+	topicos3 := OrderedCollection new.
+	"Agregar topicos"
+	topicos1
+		add: (Topico conNombre: 'Php' conDescripcion: 'Oldie but goldie').
+	topicos2
+		add: (Topico conNombre: 'Javascript' conDescripcion: 'Chad web language').
+	topicos3
+		add: (Topico conNombre: 'Ruby on Rails' conDescripcion: 'Like a gem').
+	"Usarios"
+	usuario1 := Usuario conNombre: 'Codubi' conContrasenia: '123456'.
+	usuario2 := Usuario conNombre: 'Ay no c' conContrasenia: '654321'.
+	usuario3 := Usuario conNombre: 'Jeje ta bien' conContrasenia: '7890'.
+	"Creacion de preguntas"
+	usuario1
+		agregarPreguntaConTopicos: topicos1
+		conTitulo: 'Como declarar una variable en php?'
+		conDescripcion: 'Eso. Aguante php'.
+	usuario2
+		agregarPreguntaConTopicos: topicos2
+		conTitulo: 'Por que Javascript es el mejor lenguaje de programacion'
+		conDescripcion: 'Para mi el tema ya no tiene discusion'.
+	usuario3
+		agregarPreguntaConTopicos: topicos3
+		conTitulo: 'Como puedo hacer una API en RoR?'
+		conDescripcion: 'Eso.'.
+	self agregarUsuario: usuario1; agregarUsuario: usuario2; agregarUsuario:usuario3
 ]
 
 { #category : #accessing }

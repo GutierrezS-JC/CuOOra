@@ -54,3 +54,8 @@ Pregunta >> obtenerRespuestas [
 Pregunta >> tieneTopicoBuscado: unosTopicos [
 	^ topicos includesAny: unosTopicos
 ]
+
+{ #category : #accessing }
+Pregunta >> titulo [
+^titulo
+]
