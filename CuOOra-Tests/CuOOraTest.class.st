@@ -91,8 +91,7 @@ CuOOraTest >> testObtenerPreguntasDeTopico [
 		agregarPreguntaConTopicos: topicos
 		conTitulo: 'Php vs JS?'
 		conDescripcion: 'Cual es mejor?'.
-	self
-		assert: (cuOOra obtenerPreguntasDeTopico: topicos) size
+	self assert: (cuOOra obtenerPreguntasDeTopico: topicos) size
 		equals: 2
 ]
 

@@ -6,55 +6,67 @@ Class {
 
 { #category : #rendering }
 CuOOraHeaderComponent >> renderContentOn: aCanvas [
-	aCanvas
-		header: [ aCanvas
-				unorderedList: [ aCanvas
-						listItem: [ aCanvas heading
-								level: 1;
-								with: 'CuOOra' ].
-					(self session user)
-						ifNotNil: [ aCanvas listItem
-								class: 'username';
-								with: [ aCanvas anchor
-										callback: [ self ];
-										with: [ aCanvas heading
-												level: 3;
-												with: self session user nombre ] ] ] ] ]
+	aCanvas header
+		class: 'navbar navbar-expand-lg bg-dark justify-content-between';
+		with: [ aCanvas heading
+				class: 'navbar-brand';
+				level: 1;
+				with: 'CuOOra'.
+			aCanvas div
+				with: [ self session user
+						ifNotNil: [ aCanvas unorderedList
+								with: [ aCanvas listItem with: [ self renderLogoutButtonOn: aCanvas ] ] ] ] ]
+]
+
+{ #category : #rendering }
+CuOOraHeaderComponent >> renderLogoutButtonOn: aCanvas [
+	aCanvas anchor
+		callback: [ self answer ];
+		with: [ aCanvas button
+				class: 'btn btn-danger username';
+				with: 'Logout' ]
 ]
 
 { #category : #styles }
 CuOOraHeaderComponent >> style [
 	^ '
-	header ul {
- 		list-style-type: none;
-		height:50px;
- 		margin: 0;
- 		padding: 0;
-  		overflow: hidden;
-  		background-color: #282828;
+	.navbar {
+  		position: relative;
+  		display: flex;
+  		flex-wrap: wrap;
+  		align-items: center;
+  		justify-content: space-between;
+  		padding-top: 0.5rem;
+  		padding-bottom: 0.5rem;
 	}
-	li h1{
-		margin-top:5px;
-		margin-left:20px;
-		color:red;
+	.navbar-expand-lg{
+		-webkit-box-orient:horizontal;
+		-webkit-box-direction: normal;
+		flex-flow:row nowrap;
+		-webkit-box-pack:start;
+		justify-content:flex-start;
 	}
-	li {
- 		float: left;
+	.navbar-brand{
+		display:inline-block;
+		padding-top:.3125rem;
+		padding-bottom:.3125rem;
+		margin-right:1rem;
+		margin-left:10px;
+		font-size:1.5rem;
+		line-height:inherit;
+		white-space:nowrap;
+		color: #fff;
 	}
-
-	li a {
-  		display: block;
-  		color: white;
-  		text-align: center;
-  		padding: 14px 16px;
-  		text-decoration: none;
+	.bg-dark{
+		background-color: #343a40 !important;
 	}
-
-	li a:hover {
- 	 	background-color: #333;
+	.navbar ul{
+		list-style-type:none;
+		margin-right:20px;
 	}
-	.username{
-		float:right
+	.justify-content-between{
+		-webkit-box-pack: justify !important;
+		justify-content: space-between !important;
 	}
 '
 ]

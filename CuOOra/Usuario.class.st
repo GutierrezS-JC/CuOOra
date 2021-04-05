@@ -21,6 +21,11 @@ Usuario class >> conNombre: unNombre conContrasenia: unaContrasenia [
 ]
 
 { #category : #accessing }
+Usuario >> agregarPregunta:unaPregunta [
+preguntas add:unaPregunta.
+]
+
+{ #category : #accessing }
 Usuario >> agregarPreguntaConTopicos: topicos conTitulo: unTitulo conDescripcion: unaDescripcion [
 	| preguntaNueva |
 	preguntaNueva := Pregunta
@@ -89,7 +94,7 @@ Usuario >> nombre [
 
 { #category : #accessing }
 Usuario >> obtenerPreguntasRealizadas [
-^preguntas
+	^ preguntas asSortedCollection: [ :a :b | a hora < b hora ]
 ]
 
 { #category : #accessing }

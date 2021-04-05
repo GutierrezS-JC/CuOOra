@@ -32,6 +32,11 @@ CuOOra >> agregarTopicoConNombre: unNombre conDescripcion: unaDescripcion [
 ]
 
 { #category : #accessing }
+CuOOra >> agregarTopicos: unaColeccionDeTopicos [
+	topicos addAll:unaColeccionDeTopicos .
+]
+
+{ #category : #accessing }
 CuOOra >> agregarUsuario:unUsuario [
 usuarios add:unUsuario .
 ]
@@ -59,6 +64,18 @@ CuOOra >> crearUsuarioConNombre: unNombre conContrasenia: unaContrasenia [
 ]
 
 { #category : #accessing }
+CuOOra >> devolverPreguntas [
+	^ (usuarios
+		flatCollect: [ :usuario | usuario obtenerPreguntasRealizadas ])
+		asSortedCollection: [ :a :b | a fecha > b fecha ]
+]
+
+{ #category : #accessing }
+CuOOra >> devolverTopicos [
+^topicos
+]
+
+{ #category : #accessing }
 CuOOra >> devolverUsuarios [
 ^usuarios
 ]
@@ -80,8 +97,9 @@ CuOOra >> initialize [
 
 { #category : #initialize }
 CuOOra >> initializeWithQuestions [
-	| usuario1 usuario2 usuario3 topicos1 topicos2 topicos3 |
+	| usuario1 usuario2 usuario3 topicos1 topicos2 topicos3 coleccionTopicos |
 	"Inicializacion de colecciones"
+	coleccionTopicos := OrderedCollection new.
 	topicos1 := OrderedCollection new.
 	topicos2 := OrderedCollection new.
 	topicos3 := OrderedCollection new.
@@ -97,6 +115,10 @@ CuOOra >> initializeWithQuestions [
 	usuario2 := Usuario conNombre: 'Ay no c' conContrasenia: '654321'.
 	usuario3 := Usuario conNombre: 'Jeje ta bien' conContrasenia: '7890'.
 	"Creacion de preguntas"
+	self
+		agregarUsuario: usuario1;
+		agregarUsuario: usuario2;
+		agregarUsuario: usuario3.
 	usuario1
 		agregarPreguntaConTopicos: topicos1
 		conTitulo: 'Como declarar una variable en php?'
@@ -109,7 +131,10 @@ CuOOra >> initializeWithQuestions [
 		agregarPreguntaConTopicos: topicos3
 		conTitulo: 'Como puedo hacer una API en RoR?'
 		conDescripcion: 'Eso.'.
-	self agregarUsuario: usuario1; agregarUsuario: usuario2; agregarUsuario:usuario3
+	topicos1 do: [ :topico | coleccionTopicos add: topico ].
+	topicos2 do: [ :topico | coleccionTopicos add: topico ].
+	topicos3 do: [ :topico | coleccionTopicos add: topico ].
+	self agregarTopicos: coleccionTopicos
 ]
 
 { #category : #accessing }

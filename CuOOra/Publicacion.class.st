@@ -62,6 +62,16 @@ Publicacion >> devolverPuntosTotales [
 	^ self subclassResponsibility
 ]
 
+{ #category : #accessing }
+Publicacion >> fecha [
+^fecha
+]
+
+{ #category : #accessing }
+Publicacion >> hora [
+	^ hora
+]
+
 { #category : #initialize }
 Publicacion >> initialize [
    likes:= OrderedCollection new.
