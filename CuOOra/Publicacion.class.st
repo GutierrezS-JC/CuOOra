@@ -4,6 +4,7 @@ Class {
 	#instVars : [
 		'fecha',
 		'hora',
+		'fechaYHora',
 		'likes',
 		'dislikes'
 	],
@@ -68,14 +69,20 @@ Publicacion >> fecha [
 ]
 
 { #category : #accessing }
+Publicacion >> fechaYHora [
+^fechaYHora 
+]
+
+{ #category : #accessing }
 Publicacion >> hora [
 	^ hora
 ]
 
 { #category : #initialize }
 Publicacion >> initialize [
-   likes:= OrderedCollection new.
-	dislikes:=OrderedCollection new.
+	likes := OrderedCollection new.
+	dislikes := OrderedCollection new.
 	fecha := Date today.
-	hora := Time now
+	hora := Time now.
+	fechaYHora:= DateAndTime now.
 ]

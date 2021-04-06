@@ -48,16 +48,16 @@ CuOOraComponent >> renderButtonsOn: aCanvas [
 
 { #category : #rendering }
 CuOOraComponent >> renderSignInButtonOn: aCanvas [
-aCanvas submitButton
-						class: 'submit-button';
-						callback: [ self login ];
-						with: 'Iniciar Sesion'. 
+	aCanvas submitButton
+		class: 'btn btn-success';
+		callback: [ self login ];
+		with: 'Iniciar Sesion'
 ]
 
 { #category : #rendering }
 CuOOraComponent >> renderSignUpButtonOn: aCanvas [
 	aCanvas submitButton
-	class: 'submit-button';
+		class: 'btn btn-primary';
 		callback: [ self registrarNuevoUsuario ];
 		with: 'Registrarme'
 ]

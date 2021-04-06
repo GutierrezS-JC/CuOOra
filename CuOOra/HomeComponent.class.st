@@ -12,6 +12,11 @@ HomeComponent class >> renderContentOn: aCanvas [
 	aCanvas heading: 'Welcome ' , self session user name.
 ]
 
+{ #category : #callbacks }
+HomeComponent >> addTopic [
+	self call: NewTopicComponent new
+]
+
 { #category : #hooks }
 HomeComponent >> children [
 ^ OrderedCollection with: header
@@ -46,10 +51,10 @@ HomeComponent >> model [
 { #category : #rendering }
 HomeComponent >> renderAddTopicButtonOn: aCanvas [
 	aCanvas anchor
-		callback: [ self ];
+		callback: [ self addTopic ];
 		with: [ aCanvas button
 				class: 'btn btn-success';
-				with: 'Agregar Topico de Interes' ]
+				with: 'Mis topicos de interes' ]
 ]
 
 { #category : #rendering }
@@ -71,14 +76,18 @@ HomeComponent >> renderContentOn: aCanvas [
 		class: 'jumbotron jumbotron-fluid';
 		with: [ aCanvas div
 				class: 'container';
-				with: [ aCanvas heading: 'Bienvenido ' , self session user nombre.
-					aCanvas div
-						with: [ self renderNewQuestionButtonOn: aCanvas.
-							aCanvas space.
-							self renderAddTopicButtonOn: aCanvas ].
-					aCanvas div
-						style: 'margin-top:15px';
-						with: [ self renderBuscadorOn: aCanvas ] ] ].
+				with: [ aCanvas div
+						style: '';
+						with: [ aCanvas heading: 'Bienvenido ' , self session user nombre.
+							aCanvas div
+								with: [ self renderNewQuestionButtonOn: aCanvas.
+									aCanvas space.
+									self renderAddTopicButtonOn: aCanvas ].
+							aCanvas div
+								style: 'margin-top:15px';
+								with: [ self renderBuscadorOn: aCanvas ] ].aCanvas image
+								url:
+									'https://i.pinimg.com/474x/f8/fa/0d/f8fa0dc07201038305a6d0e1c91c7b3f.jpg' ]  ].
 	aCanvas div
 		style: 'margin-top:20px; margin-bottom:50px';
 		class: 'container';
@@ -133,6 +142,10 @@ HomeComponent >> renderQuestionsOn: aCanvas [
 				do: [ :pregunta | 
 					aCanvas
 						paragraph: [ aCanvas text: pregunta titulo.
+							aCanvas text: ' // '.
+							aCanvas text: pregunta fechaYHora asDate.
+							aCanvas text: ' - '.
+							aCanvas text: pregunta fechaYHora asTime.
 							aCanvas
 								paragraph: [ aCanvas text: 'Realizada por '.
 									aCanvas text: each nombre.
@@ -173,6 +186,16 @@ HomeComponent >> style [
 		line-height: 1.2;
 		font-size: 2.5rem;
 		margin-top: 0;
+	}
+	.jumbotron .container{
+		display:flex;
+	}
+	.jumbotron .container img{
+		width: 120px;
+		height: 120px;
+		border: 3px solid #28a745;
+		border-radius: 50%;
+		margin-left: 1.5rem;
 	}
 	hr{
 		margin: 1rem 0;

@@ -80,6 +80,11 @@ Usuario >> eliminarPregunta: unaPregunta [
 	preguntas remove: unaPregunta
 ]
 
+{ #category : #accessing }
+Usuario >> eliminarTopicoInteres:topico [
+topicosInteres remove:topico.
+]
+
 { #category : #initialize }
 Usuario >> initialize [
 	seguidos := OrderedCollection new.
@@ -94,7 +99,8 @@ Usuario >> nombre [
 
 { #category : #accessing }
 Usuario >> obtenerPreguntasRealizadas [
-	^ preguntas asSortedCollection: [ :a :b | a hora < b hora ]
+	^ preguntas
+		asSortedCollection: [ :a :b | b fechaYHora < a fechaYHora ]
 ]
 
 { #category : #accessing }

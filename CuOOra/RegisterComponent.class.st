@@ -23,8 +23,9 @@ RegisterComponent >> renderInputElementsOn: aCanvas [
 ]
 
 { #category : #rendering }
-RegisterComponent >> renderSignUpButtonOn:aCanvas [
-	aCanvas submitButton 
-	callback: [ self registerYLogin ];
-	with: 'Registrarme'
+RegisterComponent >> renderSignUpButtonOn: aCanvas [
+	aCanvas submitButton
+		class:'btn btn-primary';
+		callback: [ self registerYLogin ];
+		with: 'Registrarme'
 ]

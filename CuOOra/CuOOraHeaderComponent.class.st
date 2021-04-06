@@ -24,7 +24,7 @@ CuOOraHeaderComponent >> renderLogoutButtonOn: aCanvas [
 		callback: [ self answer ];
 		with: [ aCanvas button
 				class: 'btn btn-danger username';
-				with: 'Logout' ]
+				with: 'Logout' ].
 ]
 
 { #category : #styles }

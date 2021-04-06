@@ -65,9 +65,10 @@ CuOOra >> crearUsuarioConNombre: unNombre conContrasenia: unaContrasenia [
 
 { #category : #accessing }
 CuOOra >> devolverPreguntas [
-	^ (usuarios
+	^ ((usuarios
 		flatCollect: [ :usuario | usuario obtenerPreguntasRealizadas ])
-		asSortedCollection: [ :a :b | a fecha > b fecha ]
+		asSortedCollection: [ :a :b | a fecha > b fecha ])
+		asSortedCollection: [ :a :b | a hora > b hora ]
 ]
 
 { #category : #accessing }
@@ -115,10 +116,6 @@ CuOOra >> initializeWithQuestions [
 	usuario2 := Usuario conNombre: 'Ay no c' conContrasenia: '654321'.
 	usuario3 := Usuario conNombre: 'Jeje ta bien' conContrasenia: '7890'.
 	"Creacion de preguntas"
-	self
-		agregarUsuario: usuario1;
-		agregarUsuario: usuario2;
-		agregarUsuario: usuario3.
 	usuario1
 		agregarPreguntaConTopicos: topicos1
 		conTitulo: 'Como declarar una variable en php?'
@@ -131,6 +128,9 @@ CuOOra >> initializeWithQuestions [
 		agregarPreguntaConTopicos: topicos3
 		conTitulo: 'Como puedo hacer una API en RoR?'
 		conDescripcion: 'Eso.'.
+	self agregarUsuario: usuario1.
+	self agregarUsuario: usuario2.
+	self agregarUsuario: usuario3.
 	topicos1 do: [ :topico | coleccionTopicos add: topico ].
 	topicos2 do: [ :topico | coleccionTopicos add: topico ].
 	topicos3 do: [ :topico | coleccionTopicos add: topico ].
