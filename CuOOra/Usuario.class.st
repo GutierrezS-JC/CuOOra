@@ -87,6 +87,11 @@ Usuario >> eliminarTopicoInteres:topico [
 topicosInteres remove:topico.
 ]
 
+{ #category : #accessing }
+Usuario >> eliminarUsuarioEnSeguidos: unUsuario [
+	seguidos remove: unUsuario
+]
+
 { #category : #initialize }
 Usuario >> initialize [
 	seguidos := OrderedCollection new.

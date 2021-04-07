@@ -72,7 +72,7 @@ QuestionDetailsComponent >> renderAnswerBoxOn: aCanvas [
 						with: [ aCanvas
 								paragraph: [ aCanvas
 										strong: [ aCanvas anchor
-												callback: [ self ];
+												callback: [ self call: (UserDetailsComponent conUsuario: respuesta creadaPor)];
 												with: respuesta creadaPor nombre ] ].
 							aCanvas paragraph: respuesta contenido.
 							self renderCantLikesDislikesAnswerOn: aCanvas with: respuesta.
@@ -161,7 +161,7 @@ QuestionDetailsComponent >> renderJumbotronOn: aCanvas [
 				paragraph: [ aCanvas text: 'Realizada por '.
 					aCanvas
 						strong: [ aCanvas anchor
-								callback: [ self ];
+								callback: [ self call:( UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
 								with: pregunta devolverUsuarioCreador nombre ] ].
 			self renderCantLikesDislikesOn: aCanvas.
 			self renderLikeButtonOn: aCanvas.

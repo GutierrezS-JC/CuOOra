@@ -136,8 +136,7 @@ HomeComponent >> renderQuestionsOn: aCanvas [
 		do: [ :pregunta | 
 			aCanvas div
 				class: 'pregunta';
-				with: [ aCanvas
-						heading
+				with: [ aCanvas heading
 						level: 3;
 						with: [ "aCanvas text: ' // '.
 							aCanvas text: pregunta fechaYHora asDate.
@@ -162,7 +161,7 @@ HomeComponent >> renderQuestionsOn: aCanvas [
 						paragraph: [ aCanvas text: 'Realizada por '.
 							aCanvas
 								strong: [ aCanvas anchor
-										callback: [ self ];
+										callback: [ self call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
 										with: pregunta devolverUsuarioCreador nombre ].
 							aCanvas text: ' | '.
 							aCanvas text: pregunta obtenerRespuestas size.
