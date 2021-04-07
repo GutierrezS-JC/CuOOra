@@ -21,7 +21,8 @@ NewQuestionComponent >> cargarPregunta [
 	nuevaPregunta := Pregunta
 		conTopico: topicsSelected
 		conTitulo: questionTitle
-		conDescripcion: questionText.
+		conDescripcion: questionText
+		conUsuario:self session user.
 	self session user agregarPregunta: nuevaPregunta.
 	self answer
 ]

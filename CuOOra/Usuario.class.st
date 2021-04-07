@@ -31,9 +31,11 @@ Usuario >> agregarPreguntaConTopicos: topicos conTitulo: unTitulo conDescripcion
 	preguntaNueva := Pregunta
 		conTopico: topicos
 		conTitulo: unTitulo
-		conDescripcion: unaDescripcion.
+		conDescripcion: unaDescripcion
+		conUsuario:self.
+	"Aca agregamos el usuario, es decir creamos la pregunta con el nuevo constructor de test"
 	preguntas add: preguntaNueva.
-	^preguntaNueva.
+	^ preguntaNueva
 ]
 
 { #category : #accessing }
@@ -100,7 +102,7 @@ Usuario >> nombre [
 { #category : #accessing }
 Usuario >> obtenerPreguntasRealizadas [
 	^ preguntas
-		asSortedCollection: [ :a :b | b fechaYHora < a fechaYHora ]
+		asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
 ]
 
 { #category : #accessing }

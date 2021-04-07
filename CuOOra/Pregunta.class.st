@@ -5,7 +5,8 @@ Class {
 		'titulo',
 		'descripcion',
 		'respuestas',
-		'topicos'
+		'topicos',
+		'usuario'
 	],
 	#category : #'CuOOra-Model'
 }
@@ -13,6 +14,15 @@ Class {
 { #category : #'instance creation' }
 Pregunta class >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripcion [ 
 ^ self new conTopico: unTopico conTitulo:unTitulo  conDescripcion: unaDescripcion 
+]
+
+{ #category : #'instance creation' }
+Pregunta class >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripcion conUsuario:unUsuario [
+	^ self new
+		conTopico: unTopico
+		conTitulo: unTitulo
+		conDescripcion: unaDescripcion
+		conUsuario: unUsuario
 ]
 
 { #category : #accessing }
@@ -33,8 +43,31 @@ Pregunta >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripci
 ]
 
 { #category : #accessing }
+Pregunta >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripcion conUsuario:unUsuario [
+	topicos addAll: unTopico.
+	titulo := unTitulo.
+	descripcion := unaDescripcion.
+	usuario:=unUsuario.
+]
+
+{ #category : #accessing }
+Pregunta >> devolverDescripcion [
+^descripcion 
+]
+
+{ #category : #accessing }
 Pregunta >> devolverPuntosTotales [
 	^ self calcularPuntaje  + 20
+]
+
+{ #category : #accessing }
+Pregunta >> devolverTopicos [ 
+^topicos
+]
+
+{ #category : #accessing }
+Pregunta >> devolverUsuarioCreador [
+	^ usuario
 ]
 
 { #category : #initialize }

@@ -7,11 +7,6 @@ Class {
 	#category : #'CuOOra-UI-Seaside'
 }
 
-{ #category : #rendering }
-HomeComponent class >> renderContentOn: aCanvas [
-	aCanvas heading: 'Welcome ' , self session user name.
-]
-
 { #category : #callbacks }
 HomeComponent >> addTopic [
 	self call: NewTopicComponent new
@@ -77,7 +72,6 @@ HomeComponent >> renderContentOn: aCanvas [
 		with: [ aCanvas div
 				class: 'container';
 				with: [ aCanvas div
-						style: '';
 						with: [ aCanvas heading: 'Bienvenido ' , self session user nombre.
 							aCanvas div
 								with: [ self renderNewQuestionButtonOn: aCanvas.
@@ -85,15 +79,17 @@ HomeComponent >> renderContentOn: aCanvas [
 									self renderAddTopicButtonOn: aCanvas ].
 							aCanvas div
 								style: 'margin-top:15px';
-								with: [ self renderBuscadorOn: aCanvas ] ].aCanvas image
-								url:
-									'https://i.pinimg.com/474x/f8/fa/0d/f8fa0dc07201038305a6d0e1c91c7b3f.jpg' ]  ].
+								with: [ self renderBuscadorOn: aCanvas ] ].
+					aCanvas image
+						url:
+							'https://i.pinimg.com/474x/f8/fa/0d/f8fa0dc07201038305a6d0e1c91c7b3f.jpg' ] ].
 	aCanvas div
 		style: 'margin-top:20px; margin-bottom:50px';
 		class: 'container';
 		with: [ aCanvas heading
 				level: 2;
-				with: 'Preguntas'.
+				class: 'display-4';
+				with: 'Ultimas Preguntas'.
 			self renderQuestionsOn: aCanvas ]
 ]
 
@@ -136,28 +132,47 @@ aCanvas anchor
 
 { #category : #rendering }
 HomeComponent >> renderQuestionsOn: aCanvas [
-	self model devolverUsuarios
-		do: [ :each | 
-			each obtenerPreguntasRealizadas
-				do: [ :pregunta | 
-					aCanvas
-						paragraph: [ aCanvas text: pregunta titulo.
-							aCanvas text: ' // '.
+	self model devolverPreguntas
+		do: [ :pregunta | 
+			aCanvas div
+				class: 'pregunta';
+				with: [ aCanvas
+						heading
+						level: 3;
+						with: [ "aCanvas text: ' // '.
 							aCanvas text: pregunta fechaYHora asDate.
 							aCanvas text: ' - '.
-							aCanvas text: pregunta fechaYHora asTime.
+							aCanvas text: pregunta fechaYHora asTime "
+							aCanvas anchor
+								callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
+								with: pregunta titulo ].
+					aCanvas paragraph
+						class: 'topicosDePregunta';
+						with: [ aCanvas
+								emphasis: [ aCanvas small
+										style: 'margin-right:2px';
+										with: 'Topicos: ' ].
+							pregunta devolverTopicos
+								do: [ :topico | 
+									aCanvas emphasis
+										class: 'topico';
+										with: [ aCanvas small: topico nombre ].
+									aCanvas space ] ].
+					aCanvas
+						paragraph: [ aCanvas text: 'Realizada por '.
 							aCanvas
-								paragraph: [ aCanvas text: 'Realizada por '.
-									aCanvas text: each nombre.
-									aCanvas text: ' | '.
-									aCanvas text: pregunta obtenerRespuestas size.
-									aCanvas text: ' respuestas' ].
-							aCanvas paragraph
-								style: 'margin-bottom:.3rem';
-								with: [ aCanvas text: pregunta cantidadLikes.
-									aCanvas text: ' likes | '.
-									aCanvas text: pregunta cantidadDislikes.
-									aCanvas text: ' dislikes' ] ].
+								strong: [ aCanvas anchor
+										callback: [ self ];
+										with: pregunta devolverUsuarioCreador nombre ].
+							aCanvas text: ' | '.
+							aCanvas text: pregunta obtenerRespuestas size.
+							aCanvas text: ' respuestas' ].
+					aCanvas paragraph
+						style: 'margin-bottom:.3rem';
+						with: [ aCanvas text: pregunta cantidadLikes.
+							aCanvas text: ' likes | '.
+							aCanvas text: pregunta cantidadDislikes.
+							aCanvas text: ' dislikes' ].
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
 					aCanvas horizontalRule ] ]
@@ -350,5 +365,27 @@ HomeComponent >> style [
 	.mr-sm-2, .mx-sm-2{
 		margin-right:.5rem !important;
 	}
+	.pregunta .topicosDePregunta{
+		color: #6c757dab !important;
+		font-weight:650;
+	}
+	.pregunta h3 a{
+		color: inherit;
+		text-decoration:none;
+	}
+	.pregunta strong a{
+		color: inherit;
+		text-decoration:none;
+	}
+	.topicosDePregunta .topico{
+		margin-right:.5rem;
+	}
+	.display-4 {
+		margin-bottom:1.5rem;
+   		font-size: 2rem;
+  	  	font-weight: 600;
+ 	   line-height: 1.2;
+	}
+
 '
 ]

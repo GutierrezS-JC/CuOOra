@@ -2,6 +2,7 @@ Class {
 	#name : #NewTopicComponent,
 	#superclass : #WAComponent,
 	#instVars : [
+		'header',
 		'topicsSelected'
 	],
 	#category : #'CuOOra-UI-Seaside'
@@ -18,6 +19,11 @@ NewTopicComponent >> cargarTopicos [
 	self answer
 ]
 
+{ #category : #hooks }
+NewTopicComponent >> children [
+	^ OrderedCollection with: header
+]
+
 { #category : #callbacks }
 NewTopicComponent >> deleteFromInterest: topico [
 	self session user eliminarTopicoInteres: topico
@@ -31,6 +37,7 @@ NewTopicComponent >> deleteFromSelected: topico [
 { #category : #initialize }
 NewTopicComponent >> initialize [
 	super initialize.
+		header := CuOOraHeaderComponent new.
 	topicsSelected := OrderedCollection new
 ]
 
@@ -78,7 +85,7 @@ NewTopicComponent >> renderAddTopicButtonOn: aCanvas [
 
 { #category : #rendering }
 NewTopicComponent >> renderContentOn: aCanvas [
-	self renderHeaderOn: aCanvas.
+	aCanvas render:header.
 	aCanvas div
 		class: 'container';
 		with: [ aCanvas form
@@ -115,20 +122,6 @@ NewTopicComponent >> renderDisableButtonOn: aCanvas with: topico [
 		class: 'btn btn-sm disabled';
 		disabled;
 		with: topico nombre
-]
-
-{ #category : #rendering }
-NewTopicComponent >> renderHeaderOn:aCanvas [
-	aCanvas header
-		class: 'navbar navbar-expand-lg bg-dark justify-content-between';
-		with: [ aCanvas heading
-				class: 'navbar-brand';
-				level: 1;
-				with: 'CuOOra'.
-			aCanvas div
-				with: [ self session user
-						ifNotNil: [ aCanvas unorderedList
-								with: [ aCanvas listItem with: [ self renderLogoutButtonOn: aCanvas ] ] ] ] ]
 ]
 
 { #category : #rendering }
