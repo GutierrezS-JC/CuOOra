@@ -4,6 +4,12 @@ Class {
 	#category : #'CuOOra-UI-Seaside'
 }
 
+{ #category : #callbacks }
+CuOOraHeaderComponent >> logout [
+	self session unregister.
+	self requestContext redirectTo: self application url
+]
+
 { #category : #rendering }
 CuOOraHeaderComponent >> renderContentOn: aCanvas [
 	aCanvas header
@@ -21,10 +27,10 @@ CuOOraHeaderComponent >> renderContentOn: aCanvas [
 { #category : #rendering }
 CuOOraHeaderComponent >> renderLogoutButtonOn: aCanvas [
 	aCanvas anchor
-		callback: [ self answer ];
+		callback: [ self logout ];
 		with: [ aCanvas button
 				class: 'btn btn-danger username';
-				with: 'Logout' ]
+				with: 'Logout' ].
 ]
 
 { #category : #styles }

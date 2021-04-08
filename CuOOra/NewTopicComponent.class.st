@@ -1,9 +1,7 @@
 Class {
-	#name : #NewQuestionComponent,
+	#name : #NewTopicComponent,
 	#superclass : #WAComponent,
 	#instVars : [
-		'questionText',
-		'questionTitle',
 		'header',
 		'topicsSelected'
 	],
@@ -11,66 +9,62 @@ Class {
 }
 
 { #category : #callbacks }
-NewQuestionComponent >> addToSelected: topico [
-	topicsSelected add: topico.
+NewTopicComponent >> addToSelected: topico [
+	topicsSelected add: topico
 ]
 
 { #category : #callbacks }
-NewQuestionComponent >> cargarPregunta [
-	| nuevaPregunta |
-	nuevaPregunta := Pregunta
-		conTopico: topicsSelected
-		conTitulo: questionTitle
-		conDescripcion: questionText
-		conUsuario:self session user.
-	self session user agregarPregunta: nuevaPregunta.
+NewTopicComponent >> cargarTopicos [
+	self session user registrarTopicoInteres: topicsSelected.
 	self answer
 ]
 
 { #category : #hooks }
-NewQuestionComponent >> children [
+NewTopicComponent >> children [
 	^ OrderedCollection with: header
 ]
 
 { #category : #callbacks }
-NewQuestionComponent >> deleteFromSelected: topico [
-	topicsSelected remove:topico
+NewTopicComponent >> deleteFromInterest: topico [
+	self session user eliminarTopicoInteres: topico
+]
+
+{ #category : #callbacks }
+NewTopicComponent >> deleteFromSelected: topico [
+	topicsSelected remove: topico
 ]
 
 { #category : #initialize }
-NewQuestionComponent >> initialize [
+NewTopicComponent >> initialize [
 	super initialize.
-	header := CuOOraHeaderComponent new.
-	topicsSelected :=OrderedCollection new.
+		header := CuOOraHeaderComponent new.
+	topicsSelected := OrderedCollection new
 ]
 
 { #category : #model }
-NewQuestionComponent >> model [
-^CuOOra soleInstance .
-]
-
-{ #category : #accessing }
-NewQuestionComponent >> questionText [
-	^questionText 
-]
-
-{ #category : #accessing }
-NewQuestionComponent >> questionText:aText [
-questionText :=aText
-]
-
-{ #category : #accessing }
-NewQuestionComponent >> questionTitle [
-^questionTitle 
-]
-
-{ #category : #accessing }
-NewQuestionComponent >> questionTitle:aText [
-	questionTitle:= aText.
+NewTopicComponent >> model [ 
+^	CuOOra soleInstance
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderAddToSelectedButtonOn: aCanvas with: topico [
+NewTopicComponent >> renderActualTopicsOfInterestOn: aCanvas [
+	self session user devolverTopicosInteres
+		ifNotEmpty: [ aCanvas div
+				style: 'margin-top:1.2rem';
+				with: [ aCanvas heading
+						level: 4;
+						with: 'Actualmente de su interes'.
+					self session user devolverTopicosInteres
+						do: [ :topico | 
+							aCanvas paragraph
+								with: [ aCanvas text: topico nombre.
+									aCanvas space.
+									self renderDeleteFromInterestButtonOn: aCanvas with: topico ] ] ].
+			aCanvas horizontalRule ]
+]
+
+{ #category : #rendering }
+NewTopicComponent >> renderAddToSelectedButtonOn: aCanvas with: topico [
 	aCanvas anchor
 		callback: [ self addToSelected: topico ];
 		with: [ aCanvas button
@@ -81,29 +75,38 @@ NewQuestionComponent >> renderAddToSelectedButtonOn: aCanvas with: topico [
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderContentOn: aCanvas [
-	aCanvas render: header.
+NewTopicComponent >> renderAddTopicButtonOn: aCanvas [
+	aCanvas anchor
+		with: [ aCanvas button
+				callback: [ self cargarTopicos ];
+				class: 'btn btn-success';
+				with: 'Agregar' ]
+]
+
+{ #category : #rendering }
+NewTopicComponent >> renderContentOn: aCanvas [
+	aCanvas render:header.
 	aCanvas div
 		class: 'container';
 		with: [ aCanvas form
 				class: 'formulario';
 				with: [ self renderSelectTopicButtonOn: aCanvas.
-					aCanvas div
-						class: 'form-group';
-						with: [ aCanvas heading
-								level: 3;
-								with: 'Titulo'.
-							aCanvas textInput
-								on: #questionTitle of: self;
-								class: 'form-control';
-								id: 'titulo' ].
-					self renderTextAreaOn: aCanvas.
-					self renderPreguntarButtonOn: aCanvas.
+					self renderAddTopicButtonOn: aCanvas.
 					self renderVolverAHomeButtonOn: aCanvas ] ]
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderDeleteFromSelectedButtonOn: aCanvas with: topico [
+NewTopicComponent >> renderDeleteFromInterestButtonOn: aCanvas with: topico [
+	aCanvas anchor
+		callback: [ self deleteFromInterest: topico ];
+		with: [ aCanvas button
+				bePush;
+				class: 'btn btn-xsm btn-outline-danger';
+				with: 'X' ]
+]
+
+{ #category : #rendering }
+NewTopicComponent >> renderDeleteFromSelectedButtonOn: aCanvas with: topico [
 	aCanvas anchor
 		callback: [ self deleteFromSelected: topico ];
 		with: [ aCanvas button
@@ -114,16 +117,24 @@ NewQuestionComponent >> renderDeleteFromSelectedButtonOn: aCanvas with: topico [
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderPreguntarButtonOn: aCanvas [
-	aCanvas anchor
-		with: [ aCanvas button
-				callback: [ self cargarPregunta ];
-				class: 'btn btn-success';
-				with: 'Preguntar' ]
+NewTopicComponent >> renderDisableButtonOn: aCanvas with: topico [
+	aCanvas button
+		class: 'btn btn-sm disabled';
+		disabled;
+		with: topico nombre
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderSelectTopicButtonOn: aCanvas [
+NewTopicComponent >> renderLogoutButtonOn: aCanvas [
+	aCanvas anchor
+		callback: [ self answer ];
+		with: [ aCanvas button
+				class: 'btn btn-danger username';
+				with: 'Logout' ]
+]
+
+{ #category : #rendering }
+NewTopicComponent >> renderSelectTopicButtonOn: aCanvas [
 	aCanvas div
 		class: 'form-group';
 		with: [ aCanvas heading
@@ -131,33 +142,26 @@ NewQuestionComponent >> renderSelectTopicButtonOn: aCanvas [
 				with: 'Topicos'.
 			self model devolverTopicos
 				do: [ :topico | 
-					(topicsSelected includes: topico)
-						ifTrue: [ self renderDeleteFromSelectedButtonOn: aCanvas with: topico ]
-						ifFalse: [ self renderAddToSelectedButtonOn: aCanvas with: topico ] ].
+					(self session user devolverTopicosInteres includes: topico)
+						ifTrue: [ self renderDisableButtonOn: aCanvas with: topico ]
+						ifFalse: [ (topicsSelected includes: topico)
+								ifTrue: [ self renderDeleteFromSelectedButtonOn: aCanvas with: topico ]
+								ifFalse: [ self renderAddToSelectedButtonOn: aCanvas with: topico ] ] ].
+			self renderActualTopicsOfInterestOn: aCanvas.
 			aCanvas div
 				with: [ topicsSelected
 						ifNotEmpty: [ aCanvas paragraph
 								style: 'margin-top:.5rem';
-								with: [ aCanvas text: 'Topicos Seleccionados'.
+								with: [ aCanvas heading
+										level: 4;
+										with: 'Topicos Seleccionados'.
 									aCanvas unorderedList
 										style: 'margin-left:2.5rem';
 										with: [ topicsSelected do: [ :topico | aCanvas listItem: topico nombre ] ] ] ] ] ]
 ]
 
 { #category : #rendering }
-NewQuestionComponent >> renderTextAreaOn: aCanvas [
-	aCanvas div
-		class: 'form-group';
-		with: [ aCanvas heading
-				level: 3;
-				with: 'Descripcion'.
-			(aCanvas textArea class: 'form-control'; on: #questionText of: self)
-				columns: 80;
-				rows: 5 ]
-]
-
-{ #category : #rendering }
-NewQuestionComponent >> renderVolverAHomeButtonOn: aCanvas [
+NewTopicComponent >> renderVolverAHomeButtonOn: aCanvas [
 	aCanvas anchor
 		callback: [ self answer ];
 		with: [ aCanvas button
@@ -168,14 +172,58 @@ NewQuestionComponent >> renderVolverAHomeButtonOn: aCanvas [
 ]
 
 { #category : #styles }
-NewQuestionComponent >> style [
-	^ '
-		*{
+NewTopicComponent >> style [
+	^ '*{
 			margin:0;
 			padding:0;
 			box-sizing:border-box;
 		}
-		
+		hr{
+			margin: .6rem 0;
+  	 		color: inherit;
+   			background-color: currentColor;
+    		border: 0;
+    		opacity: 0.25;
+  	  		height: 1px;
+		}
+		.navbar {
+  			position: relative;
+  			display: flex;
+  			flex-wrap: wrap;
+  			align-items: center;
+  			justify-content: space-between;
+  			padding-top: 0.5rem;
+  			padding-bottom: 0.5rem;
+		}
+		.navbar-expand-lg{
+			-webkit-box-orient:horizontal;
+			-webkit-box-direction: normal;
+			flex-flow:row nowrap;
+			-webkit-box-pack:start;
+			justify-content:flex-start;
+		}
+		.navbar-brand{
+			display:inline-block;
+			padding-top:.3125rem;
+			padding-bottom:.3125rem;
+			margin-right:1rem;
+			margin-left:10px;
+			font-size:1.5rem;
+			line-height:inherit;
+			white-space:nowrap;
+			color: #fff;
+		}
+		.bg-dark{
+			background-color: #343a40 !important;
+		}
+		.navbar ul{
+			list-style-type:none;
+			margin-right:20px;
+		}
+		.justify-content-between{
+			-webkit-box-pack: justify !important;
+			justify-content: space-between !important;
+		}
 		body{
 			font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color 			Emoji","Segoe 			UI Emoji","Segoe UI Symbol";
 			font-size: 1rem;
@@ -289,7 +337,12 @@ NewQuestionComponent >> style [
 			line-height: 1.5;
 			border-radius: .2rem;
 	}
-	
+	.btn-xsm{
+			padding: .25rem .5rem;
+			font-size: .5rem;
+			line-height: 1.5;
+			border-radius: .2rem;
+	}
 	.form-control {
     		display: block;
     		width: 100%;
@@ -320,10 +373,30 @@ NewQuestionComponent >> style [
 	.form-group h3{
 			margin-bottom: .7rem;
 	}	
-	textarea {
-   			overflow: auto;
-    		resize: vertical;
-		font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe 		UI Emoji","Segoe UI Symbol";
+	.btn.disabled, .btn:disabled {
+   		opacity: .65;
+	 	cursor: inherit;
+	 	color: #fff;
+		background-color: #007bff;
+	 	border-color: #007bff;
+		margin-right:5px;
+	}
+	.btn-disabled:hover {
+    	color: inherit;
+   		background-color: '';
+    	border-color: '';
+	}
+	
+	.btn-outline-danger{
+		color: #dc3545;
+		background-color: transparent;
+		background-image: none;
+		border-color: #dc3545;
+	}
+	.btn-outline-danger:hover{
+		color: #fff;
+		background-color: #dc3545;
+		border-color: #dc3545;
 	}
 '
 ]

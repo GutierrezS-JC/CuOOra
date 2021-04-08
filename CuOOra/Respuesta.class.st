@@ -25,6 +25,11 @@ Respuesta >> contenido [
 ]
 
 { #category : #accessing }
+Respuesta >> creadaPor [
+^usuario
+]
+
+{ #category : #accessing }
 Respuesta >> devolverPuntosTotales [
 	^ self calcularPuntaje  + 50
 ]
