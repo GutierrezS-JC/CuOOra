@@ -89,8 +89,8 @@ HomeComponent >> renderContentOn: aCanvas [
 		with: [ aCanvas heading
 				level: 2;
 				class: 'display-4';
-				with: 'Ultimas Preguntas'.
-			self renderQuestionsOn: aCanvas ]
+				with: 'Ultimas Preguntas'.aCanvas horizontalRule.
+			self renderQuestionsOn: aCanvas ].
 ]
 
 { #category : #rendering }
@@ -132,17 +132,13 @@ aCanvas anchor
 
 { #category : #rendering }
 HomeComponent >> renderQuestionsOn: aCanvas [
-	self model devolverPreguntas
+	(self model obtenerPreguntasRelevantesDeUsuario: self session user) ifEmpty: [aCanvas heading level:3; with:'Y bueno... no tenes topicos de interes o usuarios seguidos. Por eso tenes el Home vacio kjjj'] ifNotEmpty: [  (self model obtenerPreguntasRelevantesDeUsuario: self session user) 
 		do: [ :pregunta | 
 			aCanvas div
 				class: 'pregunta';
 				with: [ aCanvas heading
 						level: 3;
-						with: [ "aCanvas text: ' // '.
-							aCanvas text: pregunta fechaYHora asDate.
-							aCanvas text: ' - '.
-							aCanvas text: pregunta fechaYHora asTime "
-							aCanvas anchor
+						with: [ aCanvas anchor
 								callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
 								with: pregunta titulo ].
 					aCanvas paragraph
@@ -161,7 +157,8 @@ HomeComponent >> renderQuestionsOn: aCanvas [
 						paragraph: [ aCanvas text: 'Realizada por '.
 							aCanvas
 								strong: [ aCanvas anchor
-										callback: [ self call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
+										callback: [ self
+												call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
 										with: pregunta devolverUsuarioCreador nombre ].
 							aCanvas text: ' | '.
 							aCanvas text: pregunta obtenerRespuestas size.
@@ -174,7 +171,7 @@ HomeComponent >> renderQuestionsOn: aCanvas [
 							aCanvas text: ' dislikes' ].
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
-					aCanvas horizontalRule ] ]
+					aCanvas horizontalRule ] ]]
 ]
 
 { #category : #styles }

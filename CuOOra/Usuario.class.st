@@ -57,7 +57,7 @@ Usuario >> contrasenia [
 { #category : #accessing }
 Usuario >> devolverPreguntasConTopico: unosTopicos [
 	^ (self obtenerPreguntasRealizadas
-		select: [ :pregunta | pregunta tieneTopicoBuscado: unosTopicos ])
+		select: [ :pregunta | pregunta tieneTopicoBuscado: unosTopicos ]) asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
 ]
 
 { #category : #accessing }

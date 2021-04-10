@@ -150,8 +150,8 @@ GRACIAS POR TANTA VERDAD'
 
 { #category : #accessing }
 CuOOra >> obtenerPreguntasDeTopico: unosTopicos [
-	^ usuarios
-		flatCollect: [ :usuario | usuario devolverPreguntasConTopico: unosTopicos ]
+	^ (usuarios
+		flatCollect: [ :usuario | usuario devolverPreguntasConTopico: unosTopicos ])asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
 ]
 
 { #category : #accessing }
