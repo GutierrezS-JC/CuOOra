@@ -93,58 +93,103 @@ CuOOra >> iniciarSesionConNombre: unNombre conContrasenia: unaContrasenia [
 { #category : #initialize }
 CuOOra >> initialize [
 	usuarios := OrderedCollection new.
-	topicos := OrderedCollection new.
-	self initializeWithQuestions.
+	topicos := Set new.
+	self initializeWithQuestions
 ]
 
 { #category : #initialize }
 CuOOra >> initializeWithQuestions [
-	| usuario1 usuario2 usuario3 topicos1 topicos2 topicos3 coleccionTopicos preguntaDummy1 preguntaDummy2 |
+	| usuarioPedro usuarioDiego usuarioJuan usuarioGonza usuarioAyNoC topicos1 topicos2 topicos3 topicoOO1 topicoTest topicoSmalltalk topicoJs topicoPhp coleccionTopicos preguntaDummyPedro preguntaDummyDiego preguntaDummyGonza |
 	"Inicializacion de colecciones"
-	coleccionTopicos := OrderedCollection new.
+	coleccionTopicos := Set new.
 	topicos1 := OrderedCollection new.
 	topicos2 := OrderedCollection new.
 	topicos3 := OrderedCollection new.
+
+	"Creando Topicos"
+	topicoOO1 := Topico
+		conNombre: 'OO1'
+		conDescripcion: 'Orientacion a Objetos 1'.
+	topicoTest := Topico
+		conNombre: 'Test de unidad'
+		conDescripcion: 'Para testear'.
+	topicoSmalltalk := Topico
+		conNombre: 'Smalltalk'
+		conDescripcion: 'Don`t ask me, Im just an Object'.
+	topicoJs:=Topico conNombre: 'Javascript' conDescripcion: 'ChadScript'.
+	topicoPhp :=Topico conNombre: 'PHP' conDescripcion: 'Oldie but goldie'.
 	"Agregar topicos"
-	topicos1
-		add: (Topico conNombre: 'Php' conDescripcion: 'Oldie but goldie').
-	topicos2
-		add: (Topico conNombre: 'Javascript' conDescripcion: 'Chad web language').
-	topicos3
-		add: (Topico conNombre: 'Ruby on Rails' conDescripcion: 'Like a gem').
+	topicos1 add:topicoOO1;add:topicoTest.
+	topicos2 add: topicoOO1;add:topicoSmalltalk.
+	topicos3 add:topicoJs; add:topicoPhp.
 	"Usarios"
-	usuario1 := Usuario conNombre: 'Codubi' conContrasenia: '123456'.
-	usuario2 := Usuario conNombre: 'Ay no c' conContrasenia: '654321'.
-	usuario3 := Usuario conNombre: 'Jeje ta bien' conContrasenia: '7890'.
+	usuarioPedro := Usuario
+		conNombre: 'pedro@cuoora.com'
+		conContrasenia: 'pedro@cuoora.com'.
+	usuarioDiego := Usuario
+		conNombre: 'diego@cuoora.com'
+		conContrasenia: 'diego@cuoora.com'.
+	usuarioJuan := Usuario
+		conNombre: 'juan@cuoora.com'
+		conContrasenia: 'juan@cuoora.com'.
+	usuarioGonza := Usuario
+		conNombre: 'Gonza_Chad'
+		conContrasenia: '123gonza321'.
+	usuarioAyNoC := Usuario
+		conNombre: 'Ay_no_C'
+		conContrasenia: '123aynoce321'.
+
+	"Relacion de seguir"
+	usuarioJuan agregarUsuarioEnSeguidos: usuarioPedro.
+	usuarioPedro agregarUsuarioEnSeguidos: usuarioJuan.
+
 	"Creacion de preguntas"
-	preguntaDummy1 := usuario1
+	preguntaDummyPedro := usuarioPedro
 		agregarPreguntaConTopicos: topicos1
-		conTitulo: 'Como declarar una variable en php?'
-		conDescripcion: 'Eso. Aguante php'.
-	preguntaDummy2 := usuario2
+		conTitulo: '¿Para que sirve el metodo SetUp?'
+		conDescripcion: 'Eso. '.
+	preguntaDummyDiego := usuarioDiego
 		agregarPreguntaConTopicos: topicos2
-		conTitulo: 'Por que Javascript es el mejor lenguaje de programacion'
-		conDescripcion: 'Para mi el tema ya no tiene discusion'.
-	usuario3
+		conTitulo: '¿Que significa #messageNoUndertood?'
+		conDescripcion:
+			'Estoy aprendiendo a usar Smalltalk, usando Pharo 8. Viendo el tutorial que subio el profe mas o menos pude entender las cuestiones basicas de la sintaxis del lenguaje. 
+		Despues de eso no entiendo nada. Podria ser que este intentando pasar algun mensaje que no entiende el objeto receptor? Intente con otras clases pero me paso lo mismo o el resultado no era el esperado. En los comentarios dejo el codigo.'.
+	preguntaDummyGonza := usuarioGonza
 		agregarPreguntaConTopicos: topicos3
-		conTitulo: 'Como puedo hacer una API en RoR?'
-		conDescripcion: 'Eso.'.
+		conTitulo: 'Urgente, necesito ayuda con PHP por favor!!!!'
+		conDescripcion:
+			'Rapido! Llamen a una ambulancia para PHP. Ni siquiera con ayuda de Laravel pudieron parar a Javascript y su amigo Node.'.
 	"Algunas respuestas dummy"
-	preguntaDummy2
+	preguntaDummyPedro
+		agregarRespuestaConTexto:
+			'Sirve para instanciar los objetos que son evaluados por el test en un unico metodo y que se ejecute siempre antes de cada test'
+		conUsuario: usuarioDiego.
+	preguntaDummyDiego
+		agregarRespuestaConTexto:
+			'Significa que el objeto que recibio el mensaje no encontro ningun metodo para ejecutar en respuesta'
+		conUsuario: usuarioPedro.
+	preguntaDummyGonza
 		agregarRespuestaConTexto:
 			'Desde las profundidades de mi ser, lo único que puedo atinar a pensar, es que tus palabras poseen una calidad de veracidad y rigurosidad inmensamente grandes, mi cuerpo lo único que puede hacer es postrarse ante tu superioridad intelectual, no sin antes haberme percatado que vos, sin dudas has trascendido aquél dilema de los antiguos filósofos escépticos que pensaban que la verdad carecía de existencia.
 
 Porque no existe ser en esta tierra que pueda repudiar tus dichos con ningún argumento tan válido como el tuyo, es evidente que has acertado al centro de la diana, liberándonos de los tiempos tan oscuros que nublaban nuestro ser y nos enmudecían, hoy la humanidad puede gritar al unísono:
 
 GRACIAS POR TANTA VERDAD'
-		conUsuario: usuario1.
-		preguntaDummy2 agregarRespuestaConTexto: 'Jeje ta bien.' conUsuario:usuario3. 
-	self agregarUsuario: usuario1.
-	self agregarUsuario: usuario2.
-	self agregarUsuario: usuario3.
-	topicos1 do: [ :topico | coleccionTopicos add: topico ].
-	topicos2 do: [ :topico | coleccionTopicos add: topico ].
-	topicos3 do: [ :topico | coleccionTopicos add: topico ].
+		conUsuario: usuarioAyNoC.
+	preguntaDummyGonza
+		agregarRespuestaConTexto:
+			'Disculpen, pero este es un foro serio. Dejemos el offtopic para otra ocasion. Comportense o voy a tener que llamar a los MOOODZ!'
+		conUsuario: usuarioPedro.
+	self
+		agregarUsuario: usuarioPedro;
+		agregarUsuario: usuarioDiego;
+		agregarUsuario: usuarioJuan;
+		agregarUsuario: usuarioGonza;
+		agregarUsuario: usuarioAyNoC.
+	coleccionTopicos
+		addAll: topicos1;
+		addAll: topicos2;
+		addAll: topicos3.
 	self agregarTopicos: coleccionTopicos
 ]
 
