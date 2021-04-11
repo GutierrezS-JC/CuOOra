@@ -34,10 +34,12 @@ UserDetailsComponent >> initialize [
 
 { #category : #rendering }
 UserDetailsComponent >> renderBottomJumbotronOn: aCanvas [
-"Envidia"
+	usuario == self session user
+		ifFalse:
+			[ "Envidia de atributos, la siguiente linea deberia estar implementada en un metodo"
 			(self session user devolverSeguidos includes: usuario)
 				ifTrue: [ self renderUnfollowButtonOn: aCanvas ]
-				ifFalse: [ self renderFollowButtonOn: aCanvas ] 
+				ifFalse: [ self renderFollowButtonOn: aCanvas ] ]
 ]
 
 { #category : #rendering }

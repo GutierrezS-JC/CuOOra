@@ -160,12 +160,14 @@ CuOOra >> obtenerPreguntasRelevantesDeUsuario: unUsuario [
 	preguntasDeInteres := OrderedCollection new.
 	preguntasDeInteres
 		addAll:
-			((unUsuario devolverSeguidos
-				flatCollect: [ :usuario | usuario obtenerPreguntasRealizadas ])).
+			(unUsuario devolverSeguidos
+				flatCollect: [ :usuario | usuario obtenerPreguntasRealizadas ]).
 	topicosInteres := unUsuario devolverTopicosInteres.
 	preguntasDeInteres
 		addAll: (self obtenerPreguntasDeTopico: topicosInteres).
-	^ preguntasDeInteres
+	(preguntasDeInteres size <= 4)
+		ifTrue: [ ^ preguntasDeInteres ]
+		ifFalse: [ ^ preguntasDeInteres first: 5 ]
 ]
 
 { #category : #accessing }

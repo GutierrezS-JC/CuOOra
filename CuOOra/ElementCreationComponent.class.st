@@ -250,8 +250,6 @@ ElementCreationComponent >> style [
 	}
 	.btn-disabled:hover {
     	color: inherit;
-   		background-color: '';
-    	border-color: '';
 	}
 	.btn-sm{
 			padding: .25rem .5rem;

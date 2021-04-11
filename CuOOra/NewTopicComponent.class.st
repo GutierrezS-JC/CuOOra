@@ -9,6 +9,7 @@ Class {
 
 { #category : #callbacks }
 NewTopicComponent >> cargarTopicos [
+	topicsSelected ifEmpty: [ ^ self ].
 	self session user registrarTopicoInteres: topicsSelected.
 	self answer
 ]

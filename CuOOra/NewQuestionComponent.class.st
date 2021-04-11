@@ -11,11 +11,14 @@ Class {
 { #category : #callbacks }
 NewQuestionComponent >> cargarPregunta [
 	| nuevaPregunta |
+	questionTitle ifEmpty: [ ^ self ].
+	questionText ifEmpty: [ ^self ].
+	topicsSelected ifEmpty: [ ^self ].
 	nuevaPregunta := Pregunta
 		conTopico: topicsSelected
 		conTitulo: questionTitle
 		conDescripcion: questionText
-		conUsuario:self session user.
+		conUsuario: self session user.
 	self session user agregarPregunta: nuevaPregunta.
 	self answer
 ]

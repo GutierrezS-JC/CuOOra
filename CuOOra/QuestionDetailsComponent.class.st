@@ -16,10 +16,11 @@ QuestionDetailsComponent class >> conPregunta: unaPregunta [
 { #category : #callbacks }
 QuestionDetailsComponent >> addAnswer [
 	| nuevaRespuesta |
+	answerText ifEmpty:[^self].
 	nuevaRespuesta := Respuesta
 		conContenido: answerText
 		conUsuario: self session user.
-	pregunta agregarRespuesta: nuevaRespuesta
+	pregunta agregarRespuesta: nuevaRespuesta.
 ]
 
 { #category : #acessing }
@@ -51,7 +52,8 @@ QuestionDetailsComponent >> initialize [
 QuestionDetailsComponent >> renderAgregarRespuestaButtonOn: aCanvas [
 	aCanvas anchor
 		with: [ aCanvas button
-				callback:[self addAnswer ];
+				id:'buttonAddAnswer';
+				callback: [ self addAnswer ];
 				class: 'btn btn-success';
 				with: 'Responder' ]
 ]
@@ -120,16 +122,16 @@ QuestionDetailsComponent >> renderNewModalOn: aCanvas [
 								level: 2;
 								with: 'Respuesta' ].
 					aCanvas form
-								class: 'formulario';
-								with: [ 
-					aCanvas div
-						class: 'modal-body';
-						with: [ self renderTextAreaOn: aCanvas ].
-					aCanvas div
-						class: 'modal-footer';
-						with: [ aCanvas heading
-								level: 3;
-								with: [ self renderAgregarRespuestaButtonOn: aCanvas ] ] ] ] ]
+					
+						class: 'formulario';
+						with: [ aCanvas div
+								class: 'modal-body';
+								with: [ self renderTextAreaOn: aCanvas ].
+							aCanvas div
+								class: 'modal-footer';
+								with: [ aCanvas heading
+										level: 3;
+										with: [ self renderAgregarRespuestaButtonOn: aCanvas ] ] ] ] ]
 ]
 
 { #category : #rendering }
@@ -151,6 +153,7 @@ QuestionDetailsComponent >> renderTextAreaOn: aCanvas [
 				level: 3;
 				with: 'Escriba su respuesta'.
 			(aCanvas textArea
+				id: 'textAreaAnswer';
 				class: 'form-control';
 				on: #answerText of: self)
 				columns: 80;
@@ -169,31 +172,50 @@ QuestionDetailsComponent >> renderTopJumbotronOn: aCanvas [
 QuestionDetailsComponent >> script [
 	^ '
 	 document.addEventListener("DOMContentLoaded", function(event) {
-	// Get the modal
-		var modal = document.getElementById(''myModal''); 
-		console.log(modal);
-	// Get the button that opens the modal
-		var btn = document.getElementById(''myBtn'');
-		console.log(btn);
-	// Get the <span> element that closes the modal
-		let span = document.getElementsByClassName(''close'');
-		console.log(span);
-	// When the user clicks on the button, open the modal
-		btn.onclick = function() {
-  			modal.style.display = "block";
-		}
+			// Get the modal
+				var modal = document.getElementById(''myModal''); 
+	
+			// Get the button that opens the modal
+				var btn = document.getElementById(''myBtn'');
 
-	// When the user clicks on <span> (x), close the modal
-		span.onclick = function() {
-  			modal.style.display = "none";
-		}
+			// Get the <span> element that closes the modal
+				let span = document.getElementsByClassName(''close'');
+		
 
-	// When the user clicks anywhere outside of the modal, close it
-		window.onclick = function(event) {
-  			if (event.target == modal) {
-    			modal.style.display = "none";
-  			}
-		} 
+			// When the user clicks on the button, open the modal
+				btn.onclick = function() {
+  					modal.style.display = "block";
+				}
+
+			// When the user clicks on <span> (x), close the modal
+				span.onclick = function() {
+  					modal.style.display = "none";
+				}
+
+			// When the user clicks anywhere outside of the modal, close it
+				window.onclick = function(event) {
+  					if (event.target == modal) {
+    					modal.style.display = "none";
+  					}
+				}	 
+			
+			//Trim for checking blank spaces
+				function trimfield(str) { 
+    				return str.replace(/^\s+|\s+$/g,''''); 
+				}
+			
+			//Check if answer if empty or not jeje
+				var btnAddAnswer = document.getElementById(''buttonAddAnswer'');
+				buttonAddAnswer.onclick = function() {
+     				var tArea = document.getElementById(''textAreaAnswer'');
+         				if(trimfield(tArea.value) == '''') {      
+              			alert("Increible, pero me hiciste poner esta alerta para obligarte a no enviar espacios en blanco");
+              			tArea.focus();
+              			return false;       
+         				}
+         				else
+           				return true;
+				}				
 	
 	})
 '
