@@ -217,6 +217,14 @@ DetailsComponent >> style [
 		line-height: 1.5;
 		border-radius: .2rem;
 	}
+	
+	.btn-xsm{
+			padding: .25rem .5rem;
+			font-size: .5rem;
+			line-height: 1.5;
+			border-radius: .2rem;
+	}
+
 	.btn-danger{
 		color:#fff;
 		background-color:#dc3545;

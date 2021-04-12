@@ -87,12 +87,7 @@ HomeComponent >> renderContentOn: aCanvas [
 							aCanvas div
 								style: 'margin-top:15px';
 								with: [ self renderBuscadorOn: aCanvas ] ].
-					aCanvas anchor
-						style:'height:120px';
-						callback: [ self call: (UserDetailsComponent conUsuario: self session user) ];
-						with: [ aCanvas image
-								url:
-									'https://i.pinimg.com/474x/f8/fa/0d/f8fa0dc07201038305a6d0e1c91c7b3f.jpg' ] ] ].
+					] ].
 	aCanvas div
 		style: 'margin-top:20px; margin-bottom:50px';
 		class: 'container';
@@ -102,6 +97,7 @@ HomeComponent >> renderContentOn: aCanvas [
 				with: 'Ultimas Preguntas'.
 			aCanvas horizontalRule.
 			self renderQuestionsBoxOn: aCanvas ]
+
 ]
 
 { #category : #rendering }
@@ -172,15 +168,21 @@ HomeComponent >> renderQuestionOn: aCanvas with: pregunta [
 { #category : #rendering }
 HomeComponent >> renderQuestionsBoxOn: aCanvas [
 	(self model obtenerPreguntasRelevantesDeUsuario: self session user)
-		ifEmpty: [ aCanvas heading
-				level: 3;
+		ifEmpty: [ aCanvas paragraph
 				with:
-					'Y bueno... no tenes topicos de interes o usuarios seguidos. Por eso tenes el Home vacio kjjj' ]
+					'Y bueno... no tenes topicos de interes o usuarios seguidos. Por eso tenes el Home vacio.'.
+			aCanvas paragraph
+				with:
+					'Tambien puede ser que sigas a usuarios que no tengan preguntas hechas.'.
+			aCanvas paragraph
+				with:
+					'De cualquier forma te sugerimos agregar topicos de interes en el boton que se encuentra mas arriba :)'.
+			aCanvas paragraph with: [ aCanvas strong: 'Atentamente, los Modz' ] ]
 		ifNotEmpty: [ (self model obtenerPreguntasRelevantesDeUsuario: self session user)
 				do: [ :pregunta | 
 					aCanvas div
 						class: 'pregunta';
-						with: [ self renderQuestionOn: aCanvas with:pregunta ].
+						with: [ self renderQuestionOn: aCanvas with: pregunta ].
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
 					aCanvas horizontalRule ] ]
@@ -210,9 +212,7 @@ HomeComponent >> style [
 		font-size: 2.5rem;
 		margin-top: 0;
 	}
-	.jumbotron .container{
-		display:flex;
-	}
+
 	.jumbotron .container img{
 		width: 120px;
 		height: 120px;

@@ -23,6 +23,12 @@ usuario:=unUsuario .
 ]
 
 { #category : #callbacks }
+UserDetailsComponent >> deleteQuestion:pregunta [
+self session user eliminarPregunta:pregunta
+
+]
+
+{ #category : #callbacks }
 UserDetailsComponent >> follow [
 	self session user agregarUsuarioEnSeguidos: usuario
 ]
@@ -56,7 +62,8 @@ UserDetailsComponent >> renderContentMainBoxOn: aCanvas [
 						paragraph: [ aCanvas
 								strong: [ aCanvas anchor
 										callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
-										with: pregunta titulo ] ].
+										with: pregunta titulo ].
+							(pregunta devolverUsuarioCreador = self session user) ifTrue:[self renderDeleteQuestionButtonOn: aCanvas with: pregunta]].
 					aCanvas paragraph
 						class: 'topicosDePregunta';
 						with: [ aCanvas
@@ -73,7 +80,17 @@ UserDetailsComponent >> renderContentMainBoxOn: aCanvas [
 					self renderCantLikesDislikesPostOn: aCanvas with: pregunta.
 					self renderLikePostButtonOn: aCanvas with: pregunta.
 					self renderDislikePostButtonOn: aCanvas with: pregunta.
-					aCanvas horizontalRule ] ]
+					aCanvas horizontalRule ] ] 
+]
+
+{ #category : #rendering }
+UserDetailsComponent >> renderDeleteQuestionButtonOn: aCanvas with: pregunta [
+	aCanvas anchor
+	style: 'margin-left:10px';
+		callback: [ self deleteQuestion: pregunta ];
+		with: [ aCanvas button
+				class: 'btn btn-danger btn-xsm';
+				with: 'X' ]
 ]
 
 { #category : #rendering }

@@ -18,8 +18,13 @@ CuOOra class >> clearSoleInstance [
 
 { #category : #'instance creation' }
 CuOOra class >> soleInstance [
-	^ soleInstance ifNil: [ soleInstance := self new ].
-	"Hardcodear datos aca :) "
+	^ soleInstance
+		ifNil: [  soleInstance := self new initializeWithQuestions ]
+]
+
+{ #category : #'instance creation' }
+CuOOra class >> soleInstanceNoData [
+	^ soleInstance ifNil: [ soleInstance:=self new. ]
 
 ]
 
@@ -39,8 +44,12 @@ CuOOra >> agregarTopicos: unaColeccionDeTopicos [
 ]
 
 { #category : #accessing }
-CuOOra >> agregarUsuario:unUsuario [
-usuarios add:unUsuario .
+CuOOra >> agregarUsuario: unUsuario [
+	^ usuarios
+		detect:
+			[ :usuario | usuario nombre = unUsuario nombre ]
+		ifFound: [ nil ] ifNone:[ usuarios add:unUsuario ].
+
 ]
 
 { #category : #accessing }
@@ -92,9 +101,8 @@ CuOOra >> iniciarSesionConNombre: unNombre conContrasenia: unaContrasenia [
 
 { #category : #initialize }
 CuOOra >> initialize [
-	usuarios := OrderedCollection new.
-	topicos := Set new.
-	self initializeWithQuestions
+	usuarios := Set new.
+	topicos := Set new
 ]
 
 { #category : #initialize }
