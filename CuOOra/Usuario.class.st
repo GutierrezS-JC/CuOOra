@@ -44,6 +44,15 @@ seguidos add: unUsuario .
 ]
 
 { #category : #accessing }
+Usuario >> canBefriend: aUser [
+	aUser == self
+		ifTrue: [ ^ false ].
+	(seguidos includes: aUser)
+		ifTrue: [ ^ false ].
+	^ true
+]
+
+{ #category : #accessing }
 Usuario >> conNombre: unNombre conContrasenia: unaContrasenia [
 	nombre := unNombre.
 	contrasenia := unaContrasenia
