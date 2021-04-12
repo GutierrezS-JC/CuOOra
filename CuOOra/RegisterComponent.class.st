@@ -7,9 +7,10 @@ Class {
 { #category : #rendering }
 RegisterComponent >> registerYLogin [
 	| nuevoUsuario |
-	nuevoUsuario:= Usuario conNombre: usuario conContrasenia: password.
-	self model agregarUsuario: nuevoUsuario.
-	self proceedWith: nuevoUsuario
+	nuevoUsuario := Usuario conNombre: usuario conContrasenia: password.
+	(self model agregarUsuario: nuevoUsuario) ifNotNil:[self proceedWith:nuevoUsuario].
+	usuario := nil.
+	password := nil.
 ]
 
 { #category : #rendering }

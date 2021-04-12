@@ -26,6 +26,11 @@ Pregunta class >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDes
 ]
 
 { #category : #accessing }
+Pregunta >> agregarRespuesta:unaRespuesta [
+respuestas add: unaRespuesta 
+]
+
+{ #category : #accessing }
 Pregunta >> agregarRespuestaConTexto: unTexto conUsuario: unUsuario [
 	| nuevaRespuesta |
 	nuevaRespuesta := Respuesta

@@ -68,11 +68,18 @@ HomeComponent >> renderBuscadorOn: aCanvas [
 HomeComponent >> renderContentOn: aCanvas [
 	aCanvas render: header.
 	aCanvas div
-		class: 'jumbotron jumbotron-fluid';
-		with: [ aCanvas div
-				class: 'container';
+		class: 'jumbotron jumbotron-fluid imgJumbo';
+		id: 'bannerBuscador';
+		with: [ aCanvas div class: 'overlay'.
+			aCanvas div
+				class: 'container description';
 				with: [ aCanvas div
-						with: [ aCanvas heading: 'Bienvenido ' , self session user nombre.
+						with: [ aCanvas heading
+								with: [ aCanvas text: 'Bienvenido '.
+									aCanvas anchor
+										style: 'text-decoration: none; color: inherit';
+										callback: [ self call: (UserDetailsComponent conUsuario: self session user) ];
+										with: self session user nombre ].
 							aCanvas div
 								with: [ self renderNewQuestionButtonOn: aCanvas.
 									aCanvas space.
@@ -80,9 +87,7 @@ HomeComponent >> renderContentOn: aCanvas [
 							aCanvas div
 								style: 'margin-top:15px';
 								with: [ self renderBuscadorOn: aCanvas ] ].
-					aCanvas image
-						url:
-							'https://i.pinimg.com/474x/f8/fa/0d/f8fa0dc07201038305a6d0e1c91c7b3f.jpg' ] ].
+					] ].
 	aCanvas div
 		style: 'margin-top:20px; margin-bottom:50px';
 		class: 'container';
@@ -90,7 +95,9 @@ HomeComponent >> renderContentOn: aCanvas [
 				level: 2;
 				class: 'display-4';
 				with: 'Ultimas Preguntas'.
-			self renderQuestionsOn: aCanvas ]
+			aCanvas horizontalRule.
+			self renderQuestionsBoxOn: aCanvas ]
+
 ]
 
 { #category : #rendering }
@@ -113,15 +120,6 @@ HomeComponent >> renderLikeButtonOn: aCanvas with: pregunta [
 ]
 
 { #category : #rendering }
-HomeComponent >> renderLogoutButtonOn: aCanvas [
-	 aCanvas anchor
-				callback: [ self answer ];
-				with: [ aCanvas button
-						class: 'btn btn-danger';
-						with: 'Logout' ] .
-]
-
-{ #category : #rendering }
 HomeComponent >> renderNewQuestionButtonOn: aCanvas [
 aCanvas anchor
 		callback: [ self createQuestion ];
@@ -131,47 +129,60 @@ aCanvas anchor
 ]
 
 { #category : #rendering }
-HomeComponent >> renderQuestionsOn: aCanvas [
-	self model devolverPreguntas
-		do: [ :pregunta | 
-			aCanvas div
-				class: 'pregunta';
-				with: [ aCanvas heading
-						level: 3;
-						with: [ "aCanvas text: ' // '.
-							aCanvas text: pregunta fechaYHora asDate.
-							aCanvas text: ' - '.
-							aCanvas text: pregunta fechaYHora asTime "
-							aCanvas anchor
-								callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
-								with: pregunta titulo ].
-					aCanvas paragraph
-						class: 'topicosDePregunta';
-						with: [ aCanvas
-								emphasis: [ aCanvas small
-										style: 'margin-right:2px';
-										with: 'Topicos: ' ].
-							pregunta devolverTopicos
-								do: [ :topico | 
-									aCanvas emphasis
-										class: 'topico';
-										with: [ aCanvas small: topico nombre ].
-									aCanvas space ] ].
-					aCanvas
-						paragraph: [ aCanvas text: 'Realizada por '.
-							aCanvas
-								strong: [ aCanvas anchor
-										callback: [ self call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
-										with: pregunta devolverUsuarioCreador nombre ].
-							aCanvas text: ' | '.
-							aCanvas text: pregunta obtenerRespuestas size.
-							aCanvas text: ' respuestas' ].
-					aCanvas paragraph
-						style: 'margin-bottom:.3rem';
-						with: [ aCanvas text: pregunta cantidadLikes.
-							aCanvas text: ' likes | '.
-							aCanvas text: pregunta cantidadDislikes.
-							aCanvas text: ' dislikes' ].
+HomeComponent >> renderQuestionOn: aCanvas with: pregunta [
+	aCanvas heading
+		level: 3;
+		with: [ aCanvas anchor
+				callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
+				with: pregunta titulo ].
+	aCanvas paragraph
+		class: 'topicosDePregunta';
+		with: [ aCanvas
+				emphasis: [ aCanvas small
+						style: 'margin-right:2px';
+						with: 'Topicos: ' ].
+			pregunta devolverTopicos
+				do: [ :topico | 
+					aCanvas emphasis
+						class: 'topico';
+						with: [ aCanvas small: topico nombre ].
+					aCanvas space ] ].
+	aCanvas
+		paragraph: [ aCanvas text: 'Realizada por '.
+			aCanvas
+				strong: [ aCanvas anchor
+						callback: [ self
+								call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
+						with: pregunta devolverUsuarioCreador nombre ].
+			aCanvas text: ' | '.
+			aCanvas text: pregunta obtenerRespuestas size.
+			aCanvas text: ' respuestas' ].
+	aCanvas paragraph
+		style: 'margin-bottom:.3rem';
+		with: [ aCanvas text: pregunta cantidadLikes.
+			aCanvas text: ' likes | '.
+			aCanvas text: pregunta cantidadDislikes.
+			aCanvas text: ' dislikes' ]
+]
+
+{ #category : #rendering }
+HomeComponent >> renderQuestionsBoxOn: aCanvas [
+	(self model obtenerPreguntasRelevantesDeUsuario: self session user)
+		ifEmpty: [ aCanvas paragraph
+				with:
+					'Y bueno... no tenes topicos de interes o usuarios seguidos. Por eso tenes el Home vacio.'.
+			aCanvas paragraph
+				with:
+					'Tambien puede ser que sigas a usuarios que no tengan preguntas hechas.'.
+			aCanvas paragraph
+				with:
+					'De cualquier forma te sugerimos agregar topicos de interes en el boton que se encuentra mas arriba :)'.
+			aCanvas paragraph with: [ aCanvas strong: 'Atentamente, los Modz' ] ]
+		ifNotEmpty: [ (self model obtenerPreguntasRelevantesDeUsuario: self session user)
+				do: [ :pregunta | 
+					aCanvas div
+						class: 'pregunta';
+						with: [ self renderQuestionOn: aCanvas with: pregunta ].
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
 					aCanvas horizontalRule ] ]
@@ -201,9 +212,7 @@ HomeComponent >> style [
 		font-size: 2.5rem;
 		margin-top: 0;
 	}
-	.jumbotron .container{
-		display:flex;
-	}
+
 	.jumbotron .container img{
 		width: 120px;
 		height: 120px;
@@ -229,6 +238,16 @@ HomeComponent >> style [
  	.container {
    		width: 750px;
  	}
+	.description {
+  		left: 50%;
+  		position: absolute;
+  		top: 45%;
+  		transform: translate(-50%, -55%);
+  		color: rgba(255, 255, 255, 0.925);
+  		line-height: 1.5;
+		
+	}
+	
 	}
 	@media (min-width: 992px) {
   	.container {
@@ -384,6 +403,31 @@ HomeComponent >> style [
    		font-size: 2rem;
   	  	font-weight: 600;
  	   line-height: 1.2;
+	}
+	.imgJumbo {
+ 		background-image: url("https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHw%3D&w=1000&q=80");
+  		background-size: cover;
+  		background-position: center;
+  		position: relative;
+  		height: 50vh;
+	}
+	.overlay {
+  		position: absolute;
+  		min-height: 100%;
+  		min-width: 100%;
+  		left: 0;
+  		top: 0;
+  		background: rgba(0, 0, 0, 0.459);
+	}
+	
+	.description {
+  		left: 50%;
+  		position: absolute;
+  		top: 45%;
+  		transform: translate(-50%, -55%);
+  		color: rgba(255, 255, 255, 0.925);
+  		line-height: 1.5;
+		margin-top:1.5rem;
 	}
 
 '
