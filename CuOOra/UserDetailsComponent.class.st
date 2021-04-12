@@ -55,41 +55,49 @@ UserDetailsComponent >> renderContentMainBoxOn: aCanvas [
 		class: 'display-4';
 		with: 'Preguntas de ' , usuario nombre.
 	usuario obtenerPreguntasRealizadas
-		do: [ :pregunta | 
-			aCanvas div
-				class: 'pregunta';
-				with: [ aCanvas
-						paragraph: [ aCanvas
-								strong: [ aCanvas anchor
-										callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
-										with: pregunta titulo ].
-							(pregunta devolverUsuarioCreador = self session user) ifTrue:[self renderDeleteQuestionButtonOn: aCanvas with: pregunta]].
-					aCanvas paragraph
-						class: 'topicosDePregunta';
+		ifEmpty: [ aCanvas paragraph: 'Tan... vacio.'.
+			aCanvas
+				paragraph:
+					'Esta bien que no tengas dudas, dice mucho de vos. Sin embargo todos en algun momento necesitamos de la ayuda de alguien con mas experiencia. No dudes en preguntar cuando lo consideres necesario :)'.
+			aCanvas paragraph: [ aCanvas strong: 'Atentamente, los Modz' ].
+			aCanvas horizontalRule ]
+		ifNotEmpty: [ usuario obtenerPreguntasRealizadas
+				do: [ :pregunta | 
+					aCanvas div
+						class: 'pregunta';
 						with: [ aCanvas
-								emphasis: [ aCanvas small
-										style: 'margin-right:2px';
-										with: 'Topicos: ' ].
-							pregunta devolverTopicos
-								do: [ :topico | 
-									aCanvas emphasis
-										class: 'topico';
-										with: [ aCanvas small: topico nombre ].
-									aCanvas space ] ].
-					aCanvas paragraph: pregunta devolverDescripcion.
-					self renderCantLikesDislikesPostOn: aCanvas with: pregunta.
-					self renderLikePostButtonOn: aCanvas with: pregunta.
-					self renderDislikePostButtonOn: aCanvas with: pregunta.
-					aCanvas horizontalRule ] ] 
+								paragraph: [ aCanvas
+										strong: [ aCanvas anchor
+												callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
+												with: pregunta titulo ].
+									pregunta devolverUsuarioCreador = self session user
+										ifTrue: [ self renderDeleteQuestionButtonOn: aCanvas with: pregunta ] ].
+							aCanvas paragraph
+								class: 'topicosDePregunta';
+								with: [ aCanvas
+										emphasis: [ aCanvas small
+												style: 'margin-right:2px';
+												with: 'Topicos: ' ].
+									pregunta devolverTopicos
+										do: [ :topico | 
+											aCanvas emphasis
+												class: 'topico';
+												with: [ aCanvas small: topico nombre ].
+											aCanvas space ] ].
+							aCanvas paragraph: pregunta devolverDescripcion.
+							self renderCantLikesDislikesPostOn: aCanvas with: pregunta.
+							self renderLikePostButtonOn: aCanvas with: pregunta.
+							self renderDislikePostButtonOn: aCanvas with: pregunta.
+							aCanvas horizontalRule ] ] ]
 ]
 
 { #category : #rendering }
 UserDetailsComponent >> renderDeleteQuestionButtonOn: aCanvas with: pregunta [
 	aCanvas anchor
-	style: 'margin-left:10px';
+		style: 'margin-left:10px';
 		callback: [ self deleteQuestion: pregunta ];
 		with: [ aCanvas button
-				class: 'btn btn-danger btn-xsm';
+				class: 'btn btn-outline-danger btn-xsm';
 				with: 'X' ]
 ]
 

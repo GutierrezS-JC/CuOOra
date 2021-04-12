@@ -235,3 +235,10 @@ CuOOra >> obtenerRespuestasDeUsuario: unUsuario [
 	^ respuestasTotales
 		select: [ :respuesta | respuesta perteneceA: unUsuario ]
 ]
+
+{ #category : #accessing }
+CuOOra >> usersMatchingNamePart: aString [
+	^ usuarios
+		select:
+			[ :each | each nombre asLowercase includesSubstring: aString asLowercase ]
+]

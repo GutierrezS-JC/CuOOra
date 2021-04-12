@@ -96,12 +96,13 @@ DetailsComponent >> renderLikePostButtonOn: aCanvas with: post [
 ]
 
 { #category : #rendering }
-DetailsComponent >> renderMainBoxOn:aCanvas [
-aCanvas div
+DetailsComponent >> renderMainBoxOn: aCanvas [
+	aCanvas div
 		class: 'answerBox';
 		style: 'padding-top:2rem; padding-bottom:2rem';
-		with: [ self renderContentMainBoxOn:aCanvas.
-			self renderVolverButtonOn: aCanvas]
+		with: [ self renderContentMainBoxOn: aCanvas.
+		
+			self renderVolverButtonOn: aCanvas ]
 ]
 
 { #category : #rendering }

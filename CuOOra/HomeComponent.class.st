@@ -2,7 +2,8 @@ Class {
 	#name : #HomeComponent,
 	#superclass : #WAComponent,
 	#instVars : [
-		'header'
+		'header',
+		'userSearched'
 	],
 	#category : #'CuOOra-UI-Seaside'
 }
@@ -57,9 +58,11 @@ HomeComponent >> renderBuscadorOn: aCanvas [
 	aCanvas form
 		class: 'form-inline';
 		with: [ aCanvas textInput
+				on: #userSearched of: self;
 				class: 'form-control mr-sm-2';
 				placeholder: 'Buscar usuarios'.
 			aCanvas button
+				callback: [ self searchWithInput ];
 				class: 'btn btn-outline-success my-2 my-sm-0';
 				with: 'Buscar' ]
 ]
@@ -186,6 +189,12 @@ HomeComponent >> renderQuestionsBoxOn: aCanvas [
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
 					aCanvas horizontalRule ] ]
+]
+
+{ #category : #callbacks }
+HomeComponent >> searchWithInput [
+userSearched ifEmpty: [ ^ self ].
+self call: (SearchDetailsComponent withSearchInput: userSearched)
 ]
 
 { #category : #styles }
@@ -431,4 +440,14 @@ HomeComponent >> style [
 	}
 
 '
+]
+
+{ #category : #accessing }
+HomeComponent >> userSearched [
+	^ userSearched
+]
+
+{ #category : #accessing }
+HomeComponent >> userSearched: aText [
+	userSearched := aText
 ]
