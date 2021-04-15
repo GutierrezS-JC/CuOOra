@@ -74,15 +74,15 @@ QuestionDetailsComponent >> renderContentMainBoxOn: aCanvas [
 				with: [ aCanvas
 						paragraph: [ aCanvas
 								strong: [ aCanvas anchor
-										callback: [ self call: (UserDetailsComponent conUsuario: respuesta creadaPor) ];
-										with: respuesta creadaPor nombre ] ].
+										callback: [ self call: (UserDetailsComponent conUsuario: respuesta devolverUsuarioCreador ) ];
+										with: respuesta devolverUsuarioCreador nombre ] ].
 					aCanvas paragraph: respuesta contenido.
 					self renderCantLikesDislikesPostOn: aCanvas with: respuesta.
 					self renderLikePostButtonOn: aCanvas with: respuesta.
 					self renderDislikePostButtonOn: aCanvas with: respuesta.
 					aCanvas horizontalRule ] ].
 	self renderNewQuestionButtonOn: aCanvas.
-	self renderNewModalOn:aCanvas .
+	self renderNewModalOn: aCanvas
 ]
 
 { #category : #rendering }
@@ -122,16 +122,13 @@ QuestionDetailsComponent >> renderNewModalOn: aCanvas [
 								level: 2;
 								with: 'Respuesta' ].
 					aCanvas form
-					
 						class: 'formulario';
 						with: [ aCanvas div
 								class: 'modal-body';
 								with: [ self renderTextAreaOn: aCanvas ].
 							aCanvas div
 								class: 'modal-footer';
-								with: [ aCanvas heading
-										level: 3;
-										with: [ self renderAgregarRespuestaButtonOn: aCanvas ] ] ] ] ]
+								with: [  self renderAgregarRespuestaButtonOn: aCanvas  ] ] ] ]
 ]
 
 { #category : #rendering }

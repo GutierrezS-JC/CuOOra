@@ -23,10 +23,6 @@ SearchDetailsComponent >> renderBottomJumbotronOn: aCanvas [
 ]
 
 { #category : #rendering }
-SearchDetailsComponent >> renderConStringDeUsuario:aUserSearched [.
-]
-
-{ #category : #rendering }
 SearchDetailsComponent >> renderContentMainBoxOn: aCanvas [
 	userSearched ifEmpty: [ ^ self ].
 	aCanvas paragraph

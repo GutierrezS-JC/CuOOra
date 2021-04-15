@@ -2,8 +2,7 @@ Class {
 	#name : #Respuesta,
 	#superclass : #Publicacion,
 	#instVars : [
-		'contenido',
-		'usuario'
+		'contenido'
 	],
 	#category : #'CuOOra-Model'
 }
@@ -22,11 +21,6 @@ Respuesta >> conContenido: unContenido conUsuario: unUsuario [
 { #category : #accessing }
 Respuesta >> contenido [
 ^contenido
-]
-
-{ #category : #accessing }
-Respuesta >> creadaPor [
-^usuario
 ]
 
 { #category : #accessing }

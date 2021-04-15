@@ -5,8 +5,7 @@ Class {
 		'titulo',
 		'descripcion',
 		'respuestas',
-		'topicos',
-		'usuario'
+		'topicos'
 	],
 	#category : #'CuOOra-Model'
 }
@@ -48,11 +47,11 @@ Pregunta >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripci
 ]
 
 { #category : #accessing }
-Pregunta >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDescripcion conUsuario:unUsuario [
-	topicos addAll: unTopico.
+Pregunta >> conTopico: unosTopicos conTitulo: unTitulo conDescripcion: unaDescripcion conUsuario: unUsuario [
+	topicos addAll: unosTopicos.
 	titulo := unTitulo.
 	descripcion := unaDescripcion.
-	usuario:=unUsuario.
+	usuario := unUsuario
 ]
 
 { #category : #accessing }
@@ -68,11 +67,6 @@ Pregunta >> devolverPuntosTotales [
 { #category : #accessing }
 Pregunta >> devolverTopicos [ 
 ^topicos
-]
-
-{ #category : #accessing }
-Pregunta >> devolverUsuarioCreador [
-	^ usuario
 ]
 
 { #category : #initialize }

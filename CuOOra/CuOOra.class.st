@@ -29,16 +29,6 @@ CuOOra class >> soleInstanceNoData [
 ]
 
 { #category : #accessing }
-CuOOra >> agregarTopicoConNombre: unNombre conDescripcion: unaDescripcion [
-	| nuevoTopico |
-	nuevoTopico := Topico
-		conNombre: unNombre
-		conDescripcion: unaDescripcion.
-	topicos add: nuevoTopico.
-	^nuevoTopico.
-]
-
-{ #category : #accessing }
 CuOOra >> agregarTopicos: unaColeccionDeTopicos [
 	topicos addAll:unaColeccionDeTopicos .
 ]
@@ -72,13 +62,6 @@ CuOOra >> crearUsuarioConNombre: unNombre conContrasenia: unaContrasenia [
 		conContrasenia: unaContrasenia.
 	usuarios add: usuarioNuevo.
 	^usuarioNuevo
-]
-
-{ #category : #accessing }
-CuOOra >> devolverPreguntas [
-	^ (usuarios
-		flatCollect: [ :usuario | usuario obtenerPreguntasRealizadas ])
-		asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
 ]
 
 { #category : #accessing }
@@ -218,9 +201,9 @@ CuOOra >> obtenerPreguntasRelevantesDeUsuario: unUsuario [
 	topicosInteres := unUsuario devolverTopicosInteres.
 	preguntasDeInteres
 		addAll: (self obtenerPreguntasDeTopico: topicosInteres).
-	(preguntasDeInteres size <= 4)
-		ifTrue: [ ^ preguntasDeInteres ]
-		ifFalse: [ ^ preguntasDeInteres first: 5 ]
+	preguntasDeInteres size <= 4
+		ifTrue: [ ^ self ordenarPreguntas: preguntasDeInteres ]
+		ifFalse: [ ^ (self ordenarPreguntas: preguntasDeInteres) first: 5 ]
 ]
 
 { #category : #accessing }
@@ -236,9 +219,15 @@ CuOOra >> obtenerRespuestasDeUsuario: unUsuario [
 		select: [ :respuesta | respuesta perteneceA: unUsuario ]
 ]
 
+{ #category : #private }
+CuOOra >> ordenarPreguntas: coleccionPreguntas [
+	^ coleccionPreguntas
+		asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
+]
+
 { #category : #accessing }
-CuOOra >> usersMatchingNamePart: aString [
+CuOOra >> usersMatchingNamePart: stringABuscar [
 	^ usuarios
 		select:
-			[ :each | each nombre asLowercase includesSubstring: aString asLowercase ]
+			[ :each | each nombre asLowercase includesSubstring: stringABuscar  asLowercase ]
 ]

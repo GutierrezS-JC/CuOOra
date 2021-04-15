@@ -60,7 +60,7 @@ PublicacionTest >> testAgregarLike [
 	pregunta2
 		agregarLike: usuario1;
 		agregarLike: usuario2.
-	self assert: pregunta cantidadLikes equals: 1.
+	self assert:  pregunta cantidadLikes equals: 1 .
 	self assert: pregunta2 cantidadLikes equals: 2
 ]
 
