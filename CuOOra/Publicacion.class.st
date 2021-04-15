@@ -2,14 +2,18 @@ Class {
 	#name : #Publicacion,
 	#superclass : #Object,
 	#instVars : [
-		'fecha',
-		'hora',
 		'fechaYHora',
 		'likes',
-		'dislikes'
+		'dislikes',
+		'usuario'
 	],
 	#category : #'CuOOra-Model'
 }
+
+{ #category : #'instance creation' }
+Publicacion class >> conUsuario: unUsuario [
+	^ self new conUsuario: unUsuario
+]
 
 { #category : #accessing }
 Publicacion >> agregarDislike: unUsuario [
@@ -31,14 +35,14 @@ Publicacion >> agregarLike:unUsuario [
 
 { #category : #accessing }
 Publicacion >> buscarDislikeYBorrar: unUsuario [
-	^dislikes
+	 dislikes
 		detect: [ :voto | voto realizadoPor: unUsuario ]
-		ifFound: [ :dislike| dislikes remove: dislike ]
+		ifFound: [ :dislike | dislikes remove: dislike ]
 ]
 
 { #category : #accessing }
-Publicacion >> buscarLikeYBorrar:unUsuario [
-^likes
+Publicacion >> buscarLikeYBorrar: unUsuario [
+	 likes
 		detect: [ :voto | voto realizadoPor: unUsuario ]
 		ifFound: [ :like | likes remove: like ]
 ]
@@ -64,8 +68,8 @@ Publicacion >> devolverPuntosTotales [
 ]
 
 { #category : #accessing }
-Publicacion >> fecha [
-^fecha
+Publicacion >> devolverUsuarioCreador [
+	^ usuario
 ]
 
 { #category : #accessing }
@@ -73,16 +77,9 @@ Publicacion >> fechaYHora [
 ^fechaYHora 
 ]
 
-{ #category : #accessing }
-Publicacion >> hora [
-	^ hora
-]
-
 { #category : #initialize }
 Publicacion >> initialize [
 	likes := OrderedCollection new.
 	dislikes := OrderedCollection new.
-	fecha := Date today.
-	hora := Time now.
-	fechaYHora:= DateAndTime now.
+	fechaYHora := DateAndTime now
 ]

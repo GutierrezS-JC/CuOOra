@@ -21,11 +21,6 @@ Usuario class >> conNombre: unNombre conContrasenia: unaContrasenia [
 ]
 
 { #category : #accessing }
-Usuario >> agregarPregunta:unaPregunta [
-preguntas add:unaPregunta.
-]
-
-{ #category : #accessing }
 Usuario >> agregarPreguntaConTopicos: topicos conTitulo: unTitulo conDescripcion: unaDescripcion [
 	| preguntaNueva |
 	preguntaNueva := Pregunta
@@ -41,15 +36,6 @@ Usuario >> agregarPreguntaConTopicos: topicos conTitulo: unTitulo conDescripcion
 { #category : #accessing }
 Usuario >> agregarUsuarioEnSeguidos:unUsuario [
 seguidos add: unUsuario .
-]
-
-{ #category : #accessing }
-Usuario >> canBefriend: aUser [
-	aUser == self
-		ifTrue: [ ^ false ].
-	(seguidos includes: aUser)
-		ifTrue: [ ^ false ].
-	^ true
 ]
 
 { #category : #accessing }
@@ -87,7 +73,6 @@ Usuario >> devolverTopicosInteres [
 
 { #category : #accessing }
 Usuario >> eliminarPregunta: unaPregunta [
-	"aca hay que hacer algo en preguntas para eliminar las respuestas"
 	preguntas remove: unaPregunta
 ]
 
@@ -118,10 +103,15 @@ nom := nombre.
 { #category : #accessing }
 Usuario >> obtenerPreguntasRealizadas [
 	^ preguntas
-		asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ]
+		asSortedCollection: [ :a :b | a fechaYHora > b fechaYHora ].
 ]
 
 { #category : #accessing }
 Usuario >> registrarTopicoInteres: topicos [
 	 topicosInteres addAll: topicos
+]
+
+{ #category : #accessing }
+Usuario >> sigueA: usuario [
+	^ self devolverSeguidos includes: usuario
 ]

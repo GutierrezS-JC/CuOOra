@@ -12,6 +12,6 @@ SessionWithUser >> user [ ^user
 ]
 
 { #category : #accessing }
-SessionWithUser >> user: anObject [
-	user := anObject
+SessionWithUser >> user: aUser [
+	user := aUser
 ]

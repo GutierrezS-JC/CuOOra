@@ -41,9 +41,7 @@ UserDetailsComponent >> initialize [
 { #category : #rendering }
 UserDetailsComponent >> renderBottomJumbotronOn: aCanvas [
 	usuario == self session user
-		ifFalse:
-			[ "Envidia de atributos, la siguiente linea deberia estar implementada en un metodo"
-			(self session user devolverSeguidos includes: usuario)
+		ifFalse: [ (self session user sigueA: usuario)
 				ifTrue: [ self renderUnfollowButtonOn: aCanvas ]
 				ifFalse: [ self renderFollowButtonOn: aCanvas ] ]
 ]
