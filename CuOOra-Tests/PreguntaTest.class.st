@@ -41,7 +41,11 @@ PreguntaTest >> testAgregarRespuestaConTextoConUsuario [
 	pregunta
 		agregarRespuestaConTexto: 'Han domado, han domado'
 		conUsuario: usuario1.
-	self deny: pregunta obtenerRespuestas equals: nil
+	self deny: pregunta obtenerRespuestas equals: nil.
+	pregunta
+		agregarRespuestaConTexto: 'Jeje ta bien'
+		conUsuario: usuario1.
+	self assert: pregunta obtenerRespuestas size equals: 2.
 ]
 
 { #category : #tests }

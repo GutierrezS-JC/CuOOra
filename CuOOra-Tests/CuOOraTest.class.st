@@ -70,12 +70,19 @@ CuOOraTest >> testCalcularPuntajeDeUsuario [
 	pregunta4
 		agregarRespuestaConTexto: 'En donde? Github? Git push, si es por hosting decinos en donde'
 		conUsuario: usuario.
-	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 140.
+	pregunta4
+		agregarRespuestaConTexto: 'Bueno me calmo'
+		conUsuario: usuario.
+	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 190.
 	pregunta2 agregarLike: usuario2.
 	pregunta2 agregarLike: usuario3.
 	pregunta1 agregarDislike: usuario3.
 	pregunta3 obtenerRespuestas first agregarLike: usuario2.
-	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 142
+	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 192.
+	pregunta1
+		agregarRespuestaConTexto: 'Prueba pregunta'
+		conUsuario: usuario.
+	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 192.
 ]
 
 { #category : #tests }
@@ -159,4 +166,39 @@ CuOOraTest >> testObtenerRespuestasDeUsuario [
 		agregarRespuestaConTexto: 'En donde? Github? Git push, si es por hosting decinos en donde'
 		conUsuario: usuario.
 	self assert: (cuOOra obtenerRespuestasDeUsuario: usuario) size equals: 2
+]
+
+{ #category : #tests }
+CuOOraTest >> testObtenerRespuestasDeUsuarioParaPuntaje [
+	| pregunta1 pregunta2 |
+	pregunta1 := usuario
+		agregarPreguntaConTopicos: topicos
+		conTitulo: 'Php o Js?'
+		conDescripcion: 'A ver, debatan'.
+	pregunta2 := usuario2
+		agregarPreguntaConTopicos: topicos
+		conTitulo: 'Como declarar variables en php?'
+		conDescripcion: 'Eso.'.
+	pregunta1
+		agregarRespuestaConTexto: 'Ay... no se'
+		conUsuario: usuario.
+	pregunta1
+		agregarRespuestaConTexto: 'Js por que es el futuro nene' 
+		conUsuario: usuario2.
+	pregunta2
+		agregarRespuestaConTexto: 'Depende que variable pa' 
+		conUsuario: usuario3.
+	pregunta2
+		agregarRespuestaConTexto: 'Con un $'
+		conUsuario: usuario2.
+	pregunta2 
+		agregarRespuestaConTexto: 'io ke se no soi cientifiko' 
+		conUsuario: usuario.
+	pregunta2 
+		agregarRespuestaConTexto: 'solo se que n se debe poner const' 
+		conUsuario: usuario.
+	pregunta2 
+		agregarRespuestaConTexto: 'prueba de respuesta 4' 
+		conUsuario: usuario.
+	self assert: (cuOOra obtenerRespuestasDeUsuarioParaPuntaje: usuario ) size equals: 3
 ]

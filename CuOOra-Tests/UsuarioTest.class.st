@@ -53,6 +53,38 @@ UsuarioTest >> testAgregarUsuarioEnSeguidos [
 ]
 
 { #category : #tests }
+UsuarioTest >> testDevolverMisRespuestasAMisPreguntas [
+	| pregunta1 pregunta2 |
+	pregunta1 := usuario
+		agregarPreguntaConTopicos: topicos
+		conTitulo: 'Php o Js?'
+		conDescripcion: 'A ver, debatan'.
+	pregunta2 := usuario
+		agregarPreguntaConTopicos: topicos
+		conTitulo: 'Como declarar variables en php?'
+		conDescripcion: 'Eso.'.
+	pregunta1
+		agregarRespuestaConTexto: 'Ay... no se'
+		conUsuario: usuario.
+	pregunta1
+		agregarRespuestaConTexto: 'Ya deberias saberlo'
+		conUsuario: usuario.
+	pregunta1
+		agregarRespuestaConTexto: 'Js por que es el futuro nene' 
+		conUsuario: usuario2.
+	pregunta2
+		agregarRespuestaConTexto: 'Depende que variable pa' 
+		conUsuario: usuario3.
+	pregunta2
+		agregarRespuestaConTexto: 'Con un $'
+		conUsuario: usuario2.
+	pregunta2 
+		agregarRespuestaConTexto: 'io ke se no soi cientifiko' 
+		conUsuario: usuario.
+	self assert: usuario devolverMisRespuestasAMisPreguntas size equals: 3
+]
+
+{ #category : #tests }
 UsuarioTest >> testDevolverPreguntasConTopico [
 	| topicos2 |
 	topicos2 := Set new.

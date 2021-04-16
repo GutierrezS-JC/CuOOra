@@ -46,12 +46,12 @@ CuOOra >> agregarUsuario: unUsuario [
 CuOOra >> calcularPuntajeDeUsuario: unUsuario [
 	| preguntasUsuario respuestasUsuario |
 	preguntasUsuario := unUsuario obtenerPreguntasRealizadas.
-	respuestasUsuario := self obtenerRespuestasDeUsuario: unUsuario.
+	respuestasUsuario := self obtenerRespuestasDeUsuarioParaPuntaje: unUsuario.
 	^ (preguntasUsuario
-		sumNumbers: [ :pregunta | pregunta devolverPuntosTotales  ])
+		sumNumbers: [ :pregunta | pregunta devolverPuntosTotales ])
 		+
 			(respuestasUsuario
-				sumNumbers: [ :respuesta | respuesta devolverPuntosTotales  ])
+				sumNumbers: [ :respuesta | respuesta devolverPuntosTotales ])
 ]
 
 { #category : #accessing }
@@ -212,11 +212,24 @@ CuOOra >> obtenerRespuestasDeUsuario: unUsuario [
 	respuestasTotales := OrderedCollection new.
 	respuestasTotales
 		addAll:
-			((usuarios
-				flatCollect: [ :usuario | usuario devolverRespuestasDeSusPreguntas ])
-				).
+			(usuarios
+				flatCollect: [ :usuario | usuario devolverRespuestasDeSusPreguntas ]).
 	^ respuestasTotales
 		select: [ :respuesta | respuesta perteneceA: unUsuario ]
+]
+
+{ #category : #accessing }
+CuOOra >> obtenerRespuestasDeUsuarioParaPuntaje: unUsuario [
+	| respuestasTotales |
+	respuestasTotales := OrderedCollection new.
+	respuestasTotales
+		addAll:
+			(usuarios
+				flatCollect: [ :usuario | usuario devolverRespuestasDeSusPreguntas ]).
+	respuestasTotales
+		removeAllFoundIn: unUsuario devolverMisRespuestasAMisPreguntas.
+	^ respuestasTotales
+		select: [ :respuesta | respuesta perteneceA: unUsuario ].
 ]
 
 { #category : #private }
