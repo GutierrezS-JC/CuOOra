@@ -54,6 +54,47 @@ HomeComponent >> renderAddTopicButtonOn: aCanvas [
 ]
 
 { #category : #rendering }
+HomeComponent >> renderBannerOn: aCanvas [
+	aCanvas div class: 'overlay'.
+			aCanvas div
+				class: 'container description';
+				with: [ aCanvas div
+						with: [ aCanvas heading
+								with: [ aCanvas text: 'Bienvenido '.
+									aCanvas anchor
+										style: 'text-decoration: none; color: inherit';
+										callback: [ self call: (UserDetailsComponent conUsuario: self session user) ];
+										with: self session user nombre ].
+							aCanvas div
+								with: [ self renderNewQuestionButtonOn: aCanvas.
+									aCanvas space.
+									self renderAddTopicButtonOn: aCanvas ].
+							aCanvas div
+								style: 'margin-top:15px';
+								with: [ self renderBuscadorOn: aCanvas ] ] ]
+]
+
+{ #category : #rendering }
+HomeComponent >> renderBottomQuestionOn:aCanvas with:pregunta [
+aCanvas
+		paragraph: [ aCanvas text: 'Realizada por '.
+			aCanvas
+				strong: [ aCanvas anchor
+						callback: [ self
+								call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
+						with: pregunta devolverUsuarioCreador nombre ].
+			aCanvas text: ' | '.
+			aCanvas text: pregunta obtenerRespuestas size.
+			aCanvas text: ' respuestas' ].
+	aCanvas paragraph
+		style: 'margin-bottom:.3rem';
+		with: [ aCanvas text: pregunta cantidadLikes.
+			aCanvas text: ' likes | '.
+			aCanvas text: pregunta cantidadDislikes.
+			aCanvas text: ' dislikes' ]
+]
+
+{ #category : #rendering }
 HomeComponent >> renderBuscadorOn: aCanvas [
 	aCanvas form
 		class: 'form-inline';
@@ -73,24 +114,7 @@ HomeComponent >> renderContentOn: aCanvas [
 	aCanvas div
 		class: 'jumbotron jumbotron-fluid imgJumbo';
 		id: 'bannerBuscador';
-		with: [ aCanvas div class: 'overlay'.
-			aCanvas div
-				class: 'container description';
-				with: [ aCanvas div
-						with: [ aCanvas heading
-								with: [ aCanvas text: 'Bienvenido '.
-									aCanvas anchor
-										style: 'text-decoration: none; color: inherit';
-										callback: [ self call: (UserDetailsComponent conUsuario: self session user) ];
-										with: self session user nombre ].
-							aCanvas div
-								with: [ self renderNewQuestionButtonOn: aCanvas.
-									aCanvas space.
-									self renderAddTopicButtonOn: aCanvas ].
-							aCanvas div
-								style: 'margin-top:15px';
-								with: [ self renderBuscadorOn: aCanvas ] ].
-					] ].
+		with: [ self renderBannerOn: aCanvas ].
 	aCanvas div
 		style: 'margin-top:20px; margin-bottom:50px';
 		class: 'container';
@@ -100,7 +124,6 @@ HomeComponent >> renderContentOn: aCanvas [
 				with: 'Ultimas Preguntas'.
 			aCanvas horizontalRule.
 			self renderQuestionsBoxOn: aCanvas ]
-
 ]
 
 { #category : #rendering }
@@ -138,34 +161,8 @@ HomeComponent >> renderQuestionOn: aCanvas with: pregunta [
 		with: [ aCanvas anchor
 				callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
 				with: pregunta titulo ].
-	aCanvas paragraph
-		class: 'topicosDePregunta';
-		with: [ aCanvas
-				emphasis: [ aCanvas small
-						style: 'margin-right:2px';
-						with: 'Topicos: ' ].
-			pregunta devolverTopicos
-				do: [ :topico | 
-					aCanvas emphasis
-						class: 'topico';
-						with: [ aCanvas small: topico nombre ].
-					aCanvas space ] ].
-	aCanvas
-		paragraph: [ aCanvas text: 'Realizada por '.
-			aCanvas
-				strong: [ aCanvas anchor
-						callback: [ self
-								call: (UserDetailsComponent conUsuario: pregunta devolverUsuarioCreador) ];
-						with: pregunta devolverUsuarioCreador nombre ].
-			aCanvas text: ' | '.
-			aCanvas text: pregunta obtenerRespuestas size.
-			aCanvas text: ' respuestas' ].
-	aCanvas paragraph
-		style: 'margin-bottom:.3rem';
-		with: [ aCanvas text: pregunta cantidadLikes.
-			aCanvas text: ' likes | '.
-			aCanvas text: pregunta cantidadDislikes.
-			aCanvas text: ' dislikes' ]
+	self renderTopQuestionOn: aCanvas with: pregunta.
+	self renderBottomQuestionOn: aCanvas with: pregunta. 
 ]
 
 { #category : #rendering }
@@ -189,6 +186,22 @@ HomeComponent >> renderQuestionsBoxOn: aCanvas [
 					self renderLikeButtonOn: aCanvas with: pregunta.
 					self renderDislikeButtonOn: aCanvas with: pregunta.
 					aCanvas horizontalRule ] ]
+]
+
+{ #category : #rendering }
+HomeComponent >> renderTopQuestionOn:aCanvas with:pregunta [ 
+aCanvas paragraph
+		class: 'topicosDePregunta';
+		with: [ aCanvas
+				emphasis: [ aCanvas small
+						style: 'margin-right:2px';
+						with: 'Topicos: ' ].
+			pregunta devolverTopicos
+				do: [ :topico | 
+					aCanvas emphasis
+						class: 'topico';
+						with: [ aCanvas small: topico nombre ].
+					aCanvas space ] ]
 ]
 
 { #category : #callbacks }

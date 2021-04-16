@@ -49,11 +49,7 @@ AccessComponent >> renderButtonsOn: aCanvas [
 
 { #category : #rendering }
 AccessComponent >> renderContentOn: aCanvas [
-	aCanvas render:header.
-	"aCanvas heading
-		level: 3;
-		with: self session user nombre."
-	aCanvas paragraph: [ self model devolverUsuarios ].
+	aCanvas render: header.
 	self renderInputElementsOn: aCanvas
 ]
 

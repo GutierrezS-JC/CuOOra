@@ -11,11 +11,6 @@ NewTopicComponent >> cargarTopicos [
 	self answer
 ]
 
-{ #category : #hooks }
-NewTopicComponent >> children [
-	^ OrderedCollection with: header
-]
-
 { #category : #callbacks }
 NewTopicComponent >> deleteFromInterest: topico [
 	self session user eliminarTopicoInteres: topico
@@ -23,8 +18,7 @@ NewTopicComponent >> deleteFromInterest: topico [
 
 { #category : #initialize }
 NewTopicComponent >> initialize [
-	super initialize.
-	"topicsSelected := OrderedCollection new"
+	super initialize
 ]
 
 { #category : #rendering }

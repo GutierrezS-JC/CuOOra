@@ -10,16 +10,10 @@ Class {
 
 { #category : #callbacks }
 NewQuestionComponent >> cargarPregunta [
-	
 	questionTitle ifEmpty: [ ^ self ].
 	questionText ifEmpty: [ ^ self ].
 	topicsSelected ifEmpty: [ ^ self ].
-	"nuevaPregunta := Pregunta
-		conTopico: topicsSelected
-		conTitulo: questionTitle
-		conDescripcion: questionText
-		conUsuario: self session user.
-	self session user agregarPregunta: nuevaPregunta."
+
 	self session user
 		agregarPreguntaConTopicos: topicsSelected
 		conTitulo: questionTitle
@@ -34,8 +28,7 @@ NewQuestionComponent >> children [
 
 { #category : #initialize }
 NewQuestionComponent >> initialize [
-	super initialize.
-	"topicsSelected := OrderedCollection new"
+	super initialize
 ]
 
 { #category : #accessing }

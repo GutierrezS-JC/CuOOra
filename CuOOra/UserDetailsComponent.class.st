@@ -12,11 +12,6 @@ UserDetailsComponent class >> conUsuario: unUsuario [
 	^self new conUsuario: unUsuario.
 ]
 
-{ #category : #hooks }
-UserDetailsComponent >> children [
-	^ OrderedCollection with: header
-]
-
 { #category : #accessing }
 UserDetailsComponent >> conUsuario:unUsuario [
 usuario:=unUsuario .
@@ -53,40 +48,38 @@ UserDetailsComponent >> renderContentMainBoxOn: aCanvas [
 		class: 'display-4';
 		with: 'Preguntas de ' , usuario nombre.
 	usuario obtenerPreguntasRealizadas
-		ifEmpty: [ aCanvas paragraph: 'Tan... vacio.'.
-			aCanvas
-				paragraph:
-					'Esta bien que no tengas dudas, dice mucho de vos. Sin embargo todos en algun momento necesitamos de la ayuda de alguien con mas experiencia. No dudes en preguntar cuando lo consideres necesario :)'.
-			aCanvas paragraph: [ aCanvas strong: 'Atentamente, los Modz' ].
-			aCanvas horizontalRule ]
-		ifNotEmpty: [ usuario obtenerPreguntasRealizadas
-				do: [ :pregunta | 
-					aCanvas div
-						class: 'pregunta';
+		ifEmpty: [aCanvas paragraph: 'Tan... vacio.'.
+	aCanvas
+		paragraph:
+			'Esta bien que no tengas dudas, dice mucho de vos. Sin embargo todos en algun momento necesitamos de la ayuda de alguien con mas experiencia. No dudes en preguntar cuando lo consideres necesario :)'.
+	aCanvas paragraph: [ aCanvas strong: 'Atentamente, los Modz' ].
+	aCanvas horizontalRule ]
+		ifNotEmpty: [ self renderPreguntasRealizadasOn: aCanvas ]
+]
+
+{ #category : #rendering }
+UserDetailsComponent >> renderContentQuestionOn:aCanvas with:pregunta [
+aCanvas
+						paragraph: [ aCanvas
+								strong: [ aCanvas anchor
+										callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
+										with: pregunta titulo ].
+							pregunta devolverUsuarioCreador = self session user
+								ifTrue: [ self renderDeleteQuestionButtonOn: aCanvas with: pregunta ] ].
+					aCanvas paragraph
+						class: 'topicosDePregunta';
 						with: [ aCanvas
-								paragraph: [ aCanvas
-										strong: [ aCanvas anchor
-												callback: [ self call: (QuestionDetailsComponent conPregunta: pregunta) ];
-												with: pregunta titulo ].
-									pregunta devolverUsuarioCreador = self session user
-										ifTrue: [ self renderDeleteQuestionButtonOn: aCanvas with: pregunta ] ].
-							aCanvas paragraph
-								class: 'topicosDePregunta';
-								with: [ aCanvas
-										emphasis: [ aCanvas small
-												style: 'margin-right:2px';
-												with: 'Topicos: ' ].
-									pregunta devolverTopicos
-										do: [ :topico | 
-											aCanvas emphasis
-												class: 'topico';
-												with: [ aCanvas small: topico nombre ].
-											aCanvas space ] ].
-							aCanvas paragraph: pregunta devolverDescripcion.
-							self renderCantLikesDislikesPostOn: aCanvas with: pregunta.
-							self renderLikePostButtonOn: aCanvas with: pregunta.
-							self renderDislikePostButtonOn: aCanvas with: pregunta.
-							aCanvas horizontalRule ] ] ]
+								emphasis: [ aCanvas small
+										style: 'margin-right:2px';
+										with: 'Topicos: ' ].
+							pregunta devolverTopicos
+								do: [ :topico | 
+									aCanvas emphasis
+										class: 'topico';
+										with: [ aCanvas small: topico nombre ].
+									aCanvas space ] ].
+					aCanvas paragraph: pregunta devolverDescripcion.
+					self renderCantLikesDislikesPostOn: aCanvas with: pregunta.
 ]
 
 { #category : #rendering }
@@ -124,6 +117,18 @@ aCanvas paragraph
 								class: 'topico';
 								with: 'Increible pero este usuario no tiene topicos de interes, un aburrido' ].
 					aCanvas horizontalRule ].
+]
+
+{ #category : #rendering }
+UserDetailsComponent >> renderPreguntasRealizadasOn: aCanvas [
+	usuario obtenerPreguntasRealizadas
+		do: [ :pregunta | 
+			aCanvas div
+				class: 'pregunta';
+				with: [ self renderContentQuestionOn: aCanvas with:pregunta. 
+					self renderLikePostButtonOn: aCanvas with: pregunta.
+					self renderDislikePostButtonOn: aCanvas with: pregunta.
+					aCanvas horizontalRule ] ]
 ]
 
 { #category : #rendering }

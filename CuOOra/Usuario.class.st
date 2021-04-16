@@ -27,8 +27,7 @@ Usuario >> agregarPreguntaConTopicos: topicos conTitulo: unTitulo conDescripcion
 		conTopico: topicos
 		conTitulo: unTitulo
 		conDescripcion: unaDescripcion
-		conUsuario:self.
-	"Aca agregamos el usuario, es decir creamos la pregunta con el nuevo constructor de test"
+		conUsuario: self.
 	preguntas add: preguntaNueva.
 	^ preguntaNueva
 ]

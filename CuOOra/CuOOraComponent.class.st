@@ -1,3 +1,7 @@
+"
+app := WAAdmin register: CuOOraComponent asApplicationAt: 'cuoora'.
+app sessionClass: SessionWithUser
+"
 Class {
 	#name : #CuOOraComponent,
 	#superclass : #AccessComponent,
@@ -14,15 +18,9 @@ CuOOraComponent class >> initialize [
 	app sessionClass: SessionWithUser.
 ]
 
-{ #category : #hooks }
-CuOOraComponent >> children [
-	^ OrderedCollection  with: header
-]
-
 { #category : #initialization }
 CuOOraComponent >> initialize [
 	super initialize.
-	"header := CuOOraHeaderComponent new."
 	cuoora := CuOOra soleInstance
 ]
 
