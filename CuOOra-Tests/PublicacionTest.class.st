@@ -29,11 +29,13 @@ PublicacionTest >> setUp [
 		conTopico: topicos
 		conTitulo: 'Javascript vs PHP'
 		conDescripcion:
-			'The Chad Javascript vs the Oldie Php. Para mi el tema ya no tiene discusion'.
+			'The Chad Javascript vs the Oldie Php. Para mi el tema ya no tiene discusion'
+		conUsuario: usuario1.
 	pregunta2 := Pregunta
 		conTopico: topicos
 		conTitulo: 'Javascript es muy confuso?'
-		conDescripcion: 'Nada, solo eso'.
+		conDescripcion: 'Nada, solo eso'
+		conUsuario: usuario2.
 	respuesta := Respuesta
 		conContenido: 'Han domado, han domado'
 		conUsuario: usuario1.
@@ -68,13 +70,16 @@ PublicacionTest >> testAgregarLike [
 PublicacionTest >> testBuscarDislikeYBorrar [
 	pregunta agregarDislike: usuario1.
 	pregunta agregarDislike: usuario2.
-	self assert: (pregunta buscarDislikeYBorrar: usuario1) size equals: 1
+	self assert: pregunta cantidadDislikes  equals: 2
 ]
 
 { #category : #tests }
 PublicacionTest >> testBuscarLikeYBorrar [
 	pregunta agregarLike: usuario1.
-	self assert: (pregunta buscarLikeYBorrar: usuario1) size equals: 0
+	pregunta agregarLike: usuario2.
+	self assert: pregunta cantidadLikes  equals: 2.
+	pregunta agregarLike: usuario1.
+	self assert: pregunta cantidadLikes  equals: 2.
 ]
 
 { #category : #tests }

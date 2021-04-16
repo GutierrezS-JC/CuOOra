@@ -100,9 +100,7 @@ Usuario >> initialize [
 
 { #category : #accessing }
 Usuario >> nombre [
-|nom| 
-nom := nombre.
-^nom
+^nombre
 ]
 
 { #category : #accessing }

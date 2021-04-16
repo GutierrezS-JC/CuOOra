@@ -31,12 +31,14 @@ CuOOraTest >> setUp [
 		conDescripcion: 'Shine like a gem'.
 	topicos add: topico1.
 	topicos2 add: topico2.
-	usuario := cuOOra
-		crearUsuarioConNombre: 'Codubi'
-		conContrasenia: 'Nova6'.
-	usuario2 := cuOOra crearUsuarioConNombre: 'Pepe' conContrasenia: '123456'.
-	usuario3 := cuOOra crearUsuarioConNombre: 'Ay no c' conContrasenia: '654321'.
-	usuario4 := cuOOra crearUsuarioConNombre: 'Ay si c' conContrasenia: '1234567'
+	usuario := Usuario conNombre: 'Codubi' conContrasenia: 'Nova6'.
+	cuOOra agregarUsuario: usuario.
+	usuario2 := Usuario conNombre: 'Pepe' conContrasenia: '123456'.
+	usuario3 := Usuario conNombre: 'Ay no c' conContrasenia: '654321'.
+	usuario4 := Usuario conNombre: 'Ay si c' conContrasenia: '1234567'.
+	cuOOra agregarUsuario: usuario2 .
+	cuOOra agregarUsuario: usuario3 .
+	cuOOra agregarUsuario: usuario4 .
 ]
 
 { #category : #tests }
@@ -59,29 +61,29 @@ CuOOraTest >> testCalcularPuntajeDeUsuario [
 		conTitulo: 'Como subo un proyecto de RoR?'
 		conDescripcion: 'Necesito ayuda'.
 	pregunta1
-		agregarRespuestaConTexto: 'Ay... no se'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Ay... no se' conUsuario: usuario2 ).
+		
 	pregunta1
-		agregarRespuestaConTexto: 'Js, el mas chad'
-		conUsuario: usuario3.
+		agregarRespuesta: (Respuesta conContenido: 'Js, el mas chad' conUsuario: usuario3 ).
+	
 	pregunta3
-		agregarRespuestaConTexto: 'Desde la pagina oficial'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Desde la pagina oficial' conUsuario: usuario).
+	
 	pregunta4
-		agregarRespuestaConTexto: 'En donde? Github? Git push, si es por hosting decinos en donde'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'En donde? Github? Git push, si es por hosting decinos en donde' conUsuario: usuario).
+	
 	pregunta4
-		agregarRespuestaConTexto: 'Bueno me calmo'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Bueno me calmo' conUsuario: usuario).
+		
 	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 190.
 	pregunta2 agregarLike: usuario2.
 	pregunta2 agregarLike: usuario3.
 	pregunta1 agregarDislike: usuario3.
 	pregunta3 obtenerRespuestas first agregarLike: usuario2.
 	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 192.
-	pregunta1
-		agregarRespuestaConTexto: 'Prueba pregunta'
-		conUsuario: usuario.
+	
+	pregunta1 
+		agregarRespuesta: (Respuesta conContenido: 'Prueba pregunta' conUsuario: usuario ).
 	self assert: (cuOOra calcularPuntajeDeUsuario: usuario) equals: 192.
 ]
 
@@ -105,9 +107,8 @@ CuOOraTest >> testObtenerPreguntasDeTopico [
 { #category : #tests }
 CuOOraTest >> testObtenerPreguntasRelevantesDeUsuario [
 	| usuarioT |
-	usuarioT := cuOOra
-		crearUsuarioConNombre: 'UserTest'
-		conContrasenia: '1234567'.
+	usuarioT := Usuario conNombre: 'UserTest' conContrasenia: '1234567'.
+	cuOOra agregarUsuario: usuarioT.
 	usuario2
 		agregarPreguntaConTopicos: topicos
 			conTitulo: 'Php o Js?'
@@ -154,17 +155,16 @@ CuOOraTest >> testObtenerRespuestasDeUsuario [
 		conTitulo: 'Como subo un proyecto de RoR?'
 		conDescripcion: 'Necesito ayuda'.
 	pregunta1
-		agregarRespuestaConTexto: 'Ay... no se'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Ay... no se' conUsuario: usuario2 ).
+		
 	pregunta1
-		agregarRespuestaConTexto: 'Js, el mas chad'
-		conUsuario: usuario3.
+		agregarRespuesta: (Respuesta conContenido: 'Js, el mas chad' conUsuario: usuario3 ).
+	
 	pregunta3
-		agregarRespuestaConTexto: 'Desde la pagina oficial'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Desde la pagina oficial' conUsuario: usuario).
+	
 	pregunta4
-		agregarRespuestaConTexto: 'En donde? Github? Git push, si es por hosting decinos en donde'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'En donde? Github? Git push, si es por hosting decinos en donde' conUsuario: usuario).
 	self assert: (cuOOra obtenerRespuestasDeUsuario: usuario) size equals: 2
 ]
 
@@ -179,26 +179,26 @@ CuOOraTest >> testObtenerRespuestasDeUsuarioParaPuntaje [
 		agregarPreguntaConTopicos: topicos
 		conTitulo: 'Como declarar variables en php?'
 		conDescripcion: 'Eso.'.
+	
 	pregunta1
-		agregarRespuestaConTexto: 'Ay... no se'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Ay... no se' conUsuario: usuario). 
+	
 	pregunta1
-		agregarRespuestaConTexto: 'Js por que es el futuro nene' 
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Js por que es el futuro nene' conUsuario: usuario2).
+	
 	pregunta2
-		agregarRespuestaConTexto: 'Depende que variable pa' 
-		conUsuario: usuario3.
+		agregarRespuesta: (Respuesta conContenido: 'Depende que variable pa' conUsuario: usuario3 ).
+	
 	pregunta2
-		agregarRespuestaConTexto: 'Con un $'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Con un $' conUsuario: usuario2 ).
+	
 	pregunta2 
-		agregarRespuestaConTexto: 'io ke se no soi cientifiko' 
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'io ke se no soi cientifiko' conUsuario: usuario ).
+	
 	pregunta2 
-		agregarRespuestaConTexto: 'solo se que n se debe poner const' 
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'solo se que no se debe poner const' conUsuario: usuario).
+	
 	pregunta2 
-		agregarRespuestaConTexto: 'prueba de respuesta 4' 
-		conUsuario: usuario.
-	self assert: (cuOOra obtenerRespuestasDeUsuarioParaPuntaje: usuario ) size equals: 3
+		agregarRespuesta: (Respuesta conContenido: 'prueba de respuesta 4' conUsuario: usuario).
+	self assert: (cuOOra obtenerRespuestasDeUsuarioParaPuntaje: usuario ) size equals: 3.
 ]

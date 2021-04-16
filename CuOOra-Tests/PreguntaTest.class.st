@@ -34,18 +34,14 @@ PreguntaTest >> setUp [
 		conTitulo: 'Javascript vs PHP'
 		conDescripcion:
 			'The Chad Javascript vs the Oldie Php. Para mi el tema ya no tiene discusion'
+		conUsuario: usuario1.
 ]
 
 { #category : #tests }
-PreguntaTest >> testAgregarRespuestaConTextoConUsuario [
+PreguntaTest >> testAgregarRespuesta [
 	pregunta
-		agregarRespuestaConTexto: 'Han domado, han domado'
-		conUsuario: usuario1.
-	self deny: pregunta obtenerRespuestas equals: nil.
-	pregunta
-		agregarRespuestaConTexto: 'Jeje ta bien'
-		conUsuario: usuario1.
-	self assert: pregunta obtenerRespuestas size equals: 2.
+		agregarRespuesta: (Respuesta conContenido: 'Han domado, han domado' conUsuario: usuario1) .
+	self deny: pregunta obtenerRespuestas equals: nil
 ]
 
 { #category : #tests }
@@ -57,12 +53,12 @@ PreguntaTest >> testDevolverPuntosTotales [
 
 { #category : #tests }
 PreguntaTest >> testObtenerRespuestas [
+
 	pregunta
-		agregarRespuestaConTexto: 'Han domado, han domado'
-		conUsuario: usuario1.
+		agregarRespuesta: (Respuesta conContenido: 'Han domado, han domado' conUsuario: usuario1 ).
+		
 	pregunta
-		agregarRespuestaConTexto: 'Aguante PHP kjjjj'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Aguante PHP kjjjj' conUsuario: usuario2).
 	self deny: (pregunta obtenerRespuestas size) equals: 1.
 	self assert: pregunta obtenerRespuestas size equals: 2
 ]

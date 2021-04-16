@@ -34,6 +34,7 @@ UsuarioTest >> setUp [
 		conTopico: topicos
 		conTitulo: 'Como declaro una variable en php?'
 		conDescripcion: 'Eso.'
+		conUsuario: usuario.
 ]
 
 { #category : #tests }
@@ -63,24 +64,24 @@ UsuarioTest >> testDevolverMisRespuestasAMisPreguntas [
 		agregarPreguntaConTopicos: topicos
 		conTitulo: 'Como declarar variables en php?'
 		conDescripcion: 'Eso.'.
+	
 	pregunta1
-		agregarRespuestaConTexto: 'Ay... no se'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Ay... no se' conUsuario: usuario ) .
+	
 	pregunta1
-		agregarRespuestaConTexto: 'Ya deberias saberlo'
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'Ya deberias saberlo' conUsuario: usuario).
+		
 	pregunta1
-		agregarRespuestaConTexto: 'Js por que es el futuro nene' 
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Js por que es el futuro nene' conUsuario: usuario2) .
+		
 	pregunta2
-		agregarRespuestaConTexto: 'Depende que variable pa' 
-		conUsuario: usuario3.
+		agregarRespuesta: (Respuesta conContenido: 'Depende que variable pa' conUsuario: usuario3 ) .
+	
 	pregunta2
-		agregarRespuestaConTexto: 'Con un $'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Con un $' conUsuario: usuario2 ) .
+		
 	pregunta2 
-		agregarRespuestaConTexto: 'io ke se no soi cientifiko' 
-		conUsuario: usuario.
+		agregarRespuesta: (Respuesta conContenido: 'io ke se no soi cientifiko'  conUsuario: usuario).
 	self assert: usuario devolverMisRespuestasAMisPreguntas size equals: 3
 ]
 
@@ -120,14 +121,12 @@ UsuarioTest >> testDevolverRespuestasDeSusPreguntas [
 			conDescripcion: 'Quiero empezar un nuevo proyecto pero no se que Framework elegir'.
 	unaPreguntaDeUsuario := usuario obtenerPreguntasRealizadas first.
 	unaPreguntaDeUsuario
-		agregarRespuestaConTexto: 'Han Domado, Repito, Han Domado a php'
-			conUsuario: usuario2;
-		agregarRespuestaConTexto: 'Busca en google' conUsuario: usuario3.
+		agregarRespuesta: (Respuesta conContenido: 'Han Domado, Repito, Han Domado a php' conUsuario: usuario2);
+		agregarRespuesta: (Respuesta conContenido: 'Busca en google' conUsuario: usuario3 ).
 	unaPreguntaDeUsuario := usuario obtenerPreguntasRealizadas last.
+	
 	unaPreguntaDeUsuario
-		agregarRespuestaConTexto:
-			'Laravel, con muy poco esfuerzo levantas una app. Creo que es mas noob friendly'
-		conUsuario: usuario2.
+		agregarRespuesta: (Respuesta conContenido: 'Laravel, con muy poco esfuerzo levantas una app. Creo que es mas noob friendly' conUsuario: usuario2) .
 	self assert: usuario devolverRespuestasDeSusPreguntas size  equals: 3
 ]
 

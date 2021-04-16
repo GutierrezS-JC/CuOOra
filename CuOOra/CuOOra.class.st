@@ -55,16 +55,6 @@ CuOOra >> calcularPuntajeDeUsuario: unUsuario [
 ]
 
 { #category : #accessing }
-CuOOra >> crearUsuarioConNombre: unNombre conContrasenia: unaContrasenia [
-	| usuarioNuevo |
-	usuarioNuevo := Usuario
-		conNombre: unNombre
-		conContrasenia: unaContrasenia.
-	usuarios add: usuarioNuevo.
-	^usuarioNuevo
-]
-
-{ #category : #accessing }
 CuOOra >> devolverTopicos [
 ^topicos
 ]
@@ -151,26 +141,21 @@ CuOOra >> initializeWithQuestions [
 		conDescripcion:
 			'Rapido! Llamen a una ambulancia para PHP. Ni siquiera con ayuda de Laravel pudieron parar a Javascript y su amigo Node.'.
 	"Algunas respuestas dummy"
-	preguntaDummyPedro
-		agregarRespuestaConTexto:
-			'Sirve para instanciar los objetos que son evaluados por el test en un unico metodo y que se ejecute siempre antes de cada test'
-		conUsuario: usuarioDiego.
+	preguntaDummyPedro 
+		agregarRespuesta: (Respuesta conContenido: 'Sirve para instanciar los objetos que son evaluados por el test en un unico metodo y que se ejecute siempre antes de cada test' conUsuario: usuarioDiego ).
 	preguntaDummyDiego
-		agregarRespuestaConTexto:
-			'Significa que el objeto que recibio el mensaje no encontro ningun metodo para ejecutar en respuesta'
-		conUsuario: usuarioPedro.
+		agregarRespuesta: (	
+			Respuesta conContenido: 'Significa que el objeto que recibio el mensaje no encontro ningun metodo para ejecutar en respuesta' conUsuario: usuarioPedro).
+
 	preguntaDummyGonza
-		agregarRespuestaConTexto:
-			'Desde las profundidades de mi ser, lo único que puedo atinar a pensar, es que tus palabras poseen una calidad de veracidad y rigurosidad inmensamente grandes, mi cuerpo lo único que puede hacer es postrarse ante tu superioridad intelectual, no sin antes haberme percatado que vos, sin dudas has trascendido aquél dilema de los antiguos filósofos escépticos que pensaban que la verdad carecía de existencia.
+		agregarRespuesta: (	Respuesta conContenido: 'Desde las profundidades de mi ser, lo único que puedo atinar a pensar, es que tus palabras poseen una calidad de veracidad y rigurosidad inmensamente grandes, mi cuerpo lo único que puede hacer es postrarse ante tu superioridad intelectual, no sin antes haberme percatado que vos, sin dudas has trascendido aquél dilema de los antiguos filósofos escépticos que pensaban que la verdad carecía de existencia.
 
 Porque no existe ser en esta tierra que pueda repudiar tus dichos con ningún argumento tan válido como el tuyo, es evidente que has acertado al centro de la diana, liberándonos de los tiempos tan oscuros que nublaban nuestro ser y nos enmudecían, hoy la humanidad puede gritar al unísono:
 
-GRACIAS POR TANTA VERDAD'
-		conUsuario: usuarioAyNoC.
+GRACIAS POR TANTA VERDAD' conUsuario: usuarioAyNoC ).
+
 	preguntaDummyGonza
-		agregarRespuestaConTexto:
-			'Disculpen, pero este es un foro serio. Dejemos el offtopic para otra ocasion. Comportense o voy a tener que llamar a los MOOODZ!'
-		conUsuario: usuarioPedro.
+		agregarRespuesta: (Respuesta conContenido: 'Disculpen, pero este es un foro serio. Dejemos el offtopic para otra ocasion. Comportense o voy a tener que llamar a los MOOODZ!' conUsuario: usuarioPedro ).
 	self
 		agregarUsuario: usuarioPedro;
 		agregarUsuario: usuarioDiego;

@@ -234,6 +234,6 @@ AccessComponent >> usuario [
 ]
 
 { #category : #accessing }
-AccessComponent >> usuario:unUsuario [
-usuario:=unUsuario 
+AccessComponent >> usuario: unUsuario [
+usuario:= unUsuario 
 ]
