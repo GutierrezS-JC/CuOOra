@@ -25,8 +25,8 @@ Pregunta class >> conTopico: unTopico conTitulo: unTitulo conDescripcion: unaDes
 ]
 
 { #category : #accessing }
-Pregunta >> agregarRespuesta:unaRespuesta [
-respuestas add: unaRespuesta 
+Pregunta >> agregarRespuesta: unaRespuesta [
+	respuestas add: unaRespuesta
 ]
 
 { #category : #accessing }

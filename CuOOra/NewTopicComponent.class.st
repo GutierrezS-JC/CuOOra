@@ -1,9 +1,6 @@
 Class {
 	#name : #NewTopicComponent,
 	#superclass : #ElementCreationComponent,
-	#instVars : [
-		'topicsSelected'
-	],
 	#category : #'CuOOra-UI-Seaside'
 }
 
