@@ -1,6 +1,8 @@
 # CuOOra
 CuOOra. Una red social de preguntas y respuestas
 
+<img src="https://github.com/gutierrezS98/CuOOra/blob/master/CuOOra_Tour.gif" width="80%" height="80%">
+
 **Realizado por:**
 
 - :black_nib: Juan Cruz Gutierrez
